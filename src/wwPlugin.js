@@ -137,4 +137,41 @@ export default {
     /*=============================================m_ÔÔ_m=============================================\
         WeWeb Auth API
     \================================================================================================*/
+    storeToken(accessToken, refreshToken) {
+        if (accessToken) {
+            window.vm.config.globalProperties.$cookie.setCookie(ACCESS_COOKIE_NAME, accessToken);
+            wwLib.wwVariable.updateValue(`${this.id}-accessToken`, accessToken);
+        }
+        if (refreshToken) {
+            window.vm.config.globalProperties.$cookie.setCookie(REFRESH_COOKIE_NAME, refreshToken);
+            wwLib.wwVariable.updateValue(`${this.id}-refreshToken`, refreshToken);
+        }
+    },
+    removeToken() {
+        window.vm.config.globalProperties.$cookie.removeCookie(ACCESS_COOKIE_NAME);
+        wwLib.wwVariable.updateValue(`${this.id}-accessToken`, null);
+        window.vm.config.globalProperties.$cookie.removeCookie(REFRESH_COOKIE_NAME);
+        wwLib.wwVariable.updateValue(`${this.id}-refreshToken`, null);
+    },
+    async login(email, password) {
+        try {
+            const { accessToken } = await new Promise((resolve, reject) =>
+                this.cognitoUser.authenticateUser(new AuthenticationDetails({ Username: email, Password: password }), {
+                    onSuccess: result => resolve({ accessToken: result.getAccessToken().getJwtToken() }),
+                    onError: err => reject(err),
+                })
+            );
+            this.storeToken(accessToken);
+            return await this.fetchUser();
+        } catch (err) {
+            this.logout();
+            throw err;
+        }
+    },
+    logout() {
+        this.removeToken();
+        wwLib.wwVariable.updateValue(`${this.id}-user`, null);
+        wwLib.wwVariable.updateValue(`${this.id}-isAuthenticated`, false);
+        this.cognitoUser.signOut();
+    },
 };
