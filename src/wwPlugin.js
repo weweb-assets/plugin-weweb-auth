@@ -15,6 +15,20 @@ export default {
     \================================================================================================*/
     /* wwEditor:start */
     // async getRoles() {},
+    userAttributes: [
+        { label: 'Given name', key: 'given_name' },
+        { label: 'Family name', key: 'family_name' },
+        { label: 'Middle name', key: 'middle_name' },
+        { label: 'Nickname', key: 'nickname' },
+        { label: 'Profile URL', key: 'profile' },
+        { label: 'Website URL', key: 'website' },
+        { label: 'Gender', key: 'gender' },
+        { label: 'Birthdate', key: 'birthdate' },
+        { label: 'Zoneinfo', key: 'zoneinfo' },
+        { label: 'Locale', key: 'locale' },
+        { label: 'Address', key: 'address' },
+        { label: 'Phone number', key: 'phone_number' },
+    ],
     async getUsers() {
         const websiteId = wwLib.wwWebsiteData.getInfo().id;
         const response = await axios.get(`${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users`, {
