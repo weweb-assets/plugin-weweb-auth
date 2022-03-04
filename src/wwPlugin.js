@@ -1,4 +1,4 @@
-import { CognitoUserPool } from 'amazon-cognito-identity-js';
+import { CognitoUserPool, CognitoUser } from 'amazon-cognito-identity-js';
 /* wwEditor:start */
 import './components/Functions/Login.vue';
 import './components/Functions/SignUp.vue';
@@ -11,12 +11,17 @@ export default {
     /*=============================================m_ÔÔ_m=============================================\
         Plugin API
     \================================================================================================*/
-    userPool: null,
+    cognitoUserPool: null,
+    cognitoUser: null,
     async onLoad() {
         const accessToken = window.vm.config.globalProperties.$cookie.getCookie(ACCESS_COOKIE_NAME);
         // const refreshToken = window.vm.config.globalProperties.$cookie.getCookie(REFRESH_COOKIE_NAME);
 
-        this.userPool = new CognitoUserPool({
+        this.cognitoUserPool = new CognitoUserPool({
+            ClientId: this.settings.publicData.clientId,
+            UserPoolId: this.settings.publicData.userPoolId,
+        });
+        this.cognitoUser = new CognitoUser({
             ClientId: this.settings.publicData.clientId,
             UserPoolId: this.settings.publicData.userPoolId,
         });
