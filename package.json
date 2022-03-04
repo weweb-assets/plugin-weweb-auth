@@ -10,7 +10,9 @@
         "build": "weweb build",
         "serve": "weweb serve"
     },
-    "dependencies": {},
+    "dependencies": {
+        "amazon-cognito-identity-js": "^5.2.7"
+    },
     "devDependencies": {
         "@vue/eslint-config-prettier": "^6.0.0",
         "@weweb/cli": "github:weweb-team/weweb-cli#webapp",

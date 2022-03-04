@@ -1,15 +1,28 @@
+import { CognitoUserPool } from 'amazon-cognito-identity-js';
 /* wwEditor:start */
-import './components/Configuration/SettingsEdit.vue';
-import './components/Configuration/SettingsSummary.vue';
-import './components/Redirections/SettingsEdit.vue';
-import './components/Redirections/SettingsSummary.vue';
+import './components/Functions/Login.vue';
+import './components/Functions/SignUp.vue';
 /* wwEditor:end */
+
+const ACCESS_COOKIE_NAME = 'ww-auth-access-token';
+const REFRESH_COOKIE_NAME = 'ww-auth-refresh-token';
 
 export default {
     /*=============================================m_ÔÔ_m=============================================\
         Plugin API
     \================================================================================================*/
-    async onLoad() {},
+    userPool: null,
+    async onLoad() {
+        const accessToken = window.vm.config.globalProperties.$cookie.getCookie(ACCESS_COOKIE_NAME);
+        // const refreshToken = window.vm.config.globalProperties.$cookie.getCookie(REFRESH_COOKIE_NAME);
+
+        this.userPool = new CognitoUserPool({
+            ClientId: this.settings.publicData.clientId,
+            UserPoolId: this.settings.publicData.userPoolId,
+        });
+
+        if (accessToken) await this.fetchUser();
+    },
     /*=============================================m_ÔÔ_m=============================================\
         Auth API
     \================================================================================================*/
