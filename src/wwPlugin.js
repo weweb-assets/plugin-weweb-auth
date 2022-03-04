@@ -23,11 +23,21 @@ export default {
 
         return response.data;
     },
+    async importUsers(users) {
+        for (const user of users) {
+            await this.createUser(user);
+        }
+    },
     async createUser(data) {
-        const websiteId = wwLib.wwWebsiteData.getInfo().id;
-        await axios.post(`${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users`, data, {
-            headers: wwLib.wwApiRequests._getAuthHeader(),
-        });
+        try {
+            const websiteId = wwLib.wwWebsiteData.getInfo().id;
+            await axios.post(`${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users`, data, {
+                headers: wwLib.wwApiRequests._getAuthHeader(),
+            });
+        } catch (err) {
+            if (err.response && err.response.data.message) throw new Error(err.response.data.message);
+            throw err;
+        }
     },
     async updateUser(user, data) {
         const websiteId = wwLib.wwWebsiteData.getInfo().id;
