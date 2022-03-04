@@ -1,4 +1,4 @@
-import { CognitoUserPool, CognitoUser } from 'amazon-cognito-identity-js';
+import { CognitoUserPool, CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
 /* wwEditor:start */
 import './components/Functions/Login.vue';
 import './components/Functions/SignUp.vue';
