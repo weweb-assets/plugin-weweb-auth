@@ -67,32 +67,53 @@ export default {
         }
     },
     async resetUserPassword(user) {
-        const websiteId = wwLib.wwWebsiteData.getInfo().id;
-        await axios.patch(
-            `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users/${user.id}/password/reset`,
-            {},
-            { headers: wwLib.wwApiRequests._getAuthHeader() }
-        );
+        try {
+            const websiteId = wwLib.wwWebsiteData.getInfo().id;
+            await axios.patch(
+                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users/${user.id}/password/reset`,
+                {},
+                { headers: wwLib.wwApiRequests._getAuthHeader() }
+            );
+        } catch (err) {
+            if (err.response && err.response.data.message) throw new Error(err.response.data.message);
+            throw err;
+        }
     },
     async blockUser(user) {
-        const websiteId = wwLib.wwWebsiteData.getInfo().id;
-        await axios.delete(
-            `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users/${user.id}/block`,
-            { headers: wwLib.wwApiRequests._getAuthHeader() }
-        );
+        try {
+            const websiteId = wwLib.wwWebsiteData.getInfo().id;
+            await axios.delete(
+                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users/${user.id}/block`,
+                { headers: wwLib.wwApiRequests._getAuthHeader() }
+            );
+        } catch (err) {
+            if (err.response && err.response.data.message) throw new Error(err.response.data.message);
+            throw err;
+        }
     },
     async unblockUser(user) {
-        const websiteId = wwLib.wwWebsiteData.getInfo().id;
-        await axios.delete(
-            `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users/${user.id}/unblock`,
-            { headers: wwLib.wwApiRequests._getAuthHeader() }
-        );
+        try {
+            const websiteId = wwLib.wwWebsiteData.getInfo().id;
+            await axios.delete(
+                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users/${user.id}/unblock`,
+                { headers: wwLib.wwApiRequests._getAuthHeader() }
+            );
+        } catch (err) {
+            if (err.response && err.response.data.message) throw new Error(err.response.data.message);
+            throw err;
+        }
     },
     async deleteUser(user) {
-        const websiteId = wwLib.wwWebsiteData.getInfo().id;
-        await axios.delete(`${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users/${user.id}`, {
-            headers: wwLib.wwApiRequests._getAuthHeader(),
-        });
+        try {
+            const websiteId = wwLib.wwWebsiteData.getInfo().id;
+            await axios.delete(
+                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users/${user.id}`,
+                { headers: wwLib.wwApiRequests._getAuthHeader() }
+            );
+        } catch (err) {
+            if (err.response && err.response.data.message) throw new Error(err.response.data.message);
+            throw err;
+        }
     },
     /* wwEditor:end */
     /*=============================================m_ÔÔ_m=============================================\
