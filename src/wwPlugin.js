@@ -22,8 +22,8 @@ export default {
             UserPoolId: this.settings.publicData.userPoolId,
         });
         this.cognitoUser = new CognitoUser({
-            ClientId: this.settings.publicData.clientId,
-            UserPoolId: this.settings.publicData.userPoolId,
+            Username: 'email',
+            Pool: this.cognitoUserPool,
         });
 
         if (accessToken) await this.fetchUser();
@@ -157,11 +157,25 @@ export default {
         try {
             const { accessToken } = await new Promise((resolve, reject) =>
                 this.cognitoUser.authenticateUser(new AuthenticationDetails({ Username: email, Password: password }), {
-                    onSuccess: result => resolve({ accessToken: result.getAccessToken().getJwtToken() }),
+                    onSuccess: data => resolve({ accessToken: data.getAccessToken().getJwtToken() }),
                     onError: err => reject(err),
                 })
             );
             this.storeToken(accessToken);
+            return await this.fetchUser();
+        } catch (err) {
+            this.logout();
+            throw err;
+        }
+    },
+    async signUp(email, password, name) {
+        try {
+            const { authToken } = await new Promise((resolve, reject) =>
+                this.userPool.signUp(email, password, [{ Name: 'name', Value: name }], null, (err, data) =>
+                    err ? reject(err) : resolve(data.getAccessToken().getJwtToken())
+                )
+            );
+            this.storeToken(authToken);
             return await this.fetchUser();
         } catch (err) {
             this.logout();
