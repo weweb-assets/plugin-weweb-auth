@@ -23,34 +23,39 @@ export default {
 
         return response.data;
     },
-    async updateUser(user) {
+    async createUser(data) {
+        const websiteId = wwLib.wwWebsiteData.getInfo().id;
+        await axios.post(`${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users`, data, {
+            headers: wwLib.wwApiRequests._getAuthHeader(),
+        });
+    },
+    async updateUser(user, data) {
         const websiteId = wwLib.wwWebsiteData.getInfo().id;
         await axios.patch(
-            `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users/${user.username}`,
-            {},
+            `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users/${user.id}`,
+            data,
             { headers: wwLib.wwApiRequests._getAuthHeader() }
         );
     },
     async blockUser(user) {
         const websiteId = wwLib.wwWebsiteData.getInfo().id;
         await axios.delete(
-            `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users/${user.username}/block`,
+            `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users/${user.id}/block`,
             { headers: wwLib.wwApiRequests._getAuthHeader() }
         );
     },
     async unblockUser(user) {
         const websiteId = wwLib.wwWebsiteData.getInfo().id;
         await axios.delete(
-            `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users/${user.username}/unblock`,
+            `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users/${user.id}/unblock`,
             { headers: wwLib.wwApiRequests._getAuthHeader() }
         );
     },
     async deleteUser(user) {
         const websiteId = wwLib.wwWebsiteData.getInfo().id;
-        await axios.delete(
-            `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users/${user.username}`,
-            { headers: wwLib.wwApiRequests._getAuthHeader() }
-        );
+        await axios.delete(`${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users/${user.id}`, {
+            headers: wwLib.wwApiRequests._getAuthHeader(),
+        });
     },
     /* wwEditor:end */
     /*=============================================m_ÔÔ_m=============================================\
