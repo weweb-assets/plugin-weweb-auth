@@ -54,10 +54,23 @@ export default {
         }
     },
     async updateUser(user, data) {
+        try {
+            const websiteId = wwLib.wwWebsiteData.getInfo().id;
+            await axios.patch(
+                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users/${user.id}`,
+                data,
+                { headers: wwLib.wwApiRequests._getAuthHeader() }
+            );
+        } catch (err) {
+            if (err.response && err.response.data.message) throw new Error(err.response.data.message);
+            throw err;
+        }
+    },
+    async resetUserPassword(user) {
         const websiteId = wwLib.wwWebsiteData.getInfo().id;
         await axios.patch(
-            `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users/${user.id}`,
-            data,
+            `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users/${user.id}/password/reset`,
+            {},
             { headers: wwLib.wwApiRequests._getAuthHeader() }
         );
     },
