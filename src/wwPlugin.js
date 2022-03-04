@@ -21,10 +21,6 @@ export default {
             ClientId: this.settings.publicData.clientId,
             UserPoolId: this.settings.publicData.userPoolId,
         });
-        this.cognitoUser = new CognitoUser({
-            Username: 'email',
-            Pool: this.cognitoUserPool,
-        });
 
         if (accessToken) await this.fetchUser();
     },
@@ -155,6 +151,7 @@ export default {
     },
     async login(email, password) {
         try {
+            this.cognitoUser = new CognitoUser({ Username: email, Pool: this.cognitoUserPool });
             const { accessToken } = await new Promise((resolve, reject) =>
                 this.cognitoUser.authenticateUser(new AuthenticationDetails({ Username: email, Password: password }), {
                     onSuccess: data => resolve({ accessToken: data.getAccessToken().getJwtToken() }),
