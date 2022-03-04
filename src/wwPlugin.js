@@ -158,7 +158,7 @@ export default {
             const { accessToken } = await new Promise((resolve, reject) =>
                 this.cognitoUser.authenticateUser(new AuthenticationDetails({ Username: email, Password: password }), {
                     onSuccess: data => resolve({ accessToken: data.getAccessToken().getJwtToken() }),
-                    onError: err => reject(err),
+                    onFailure: err => reject(err),
                 })
             );
             this.storeToken(accessToken);
@@ -171,7 +171,7 @@ export default {
     async signUp(email, password, name) {
         try {
             const { authToken } = await new Promise((resolve, reject) =>
-                this.userPool.signUp(email, password, [{ Name: 'name', Value: name }], null, (err, data) =>
+                this.cognitoUserPool.signUp(email, password, [{ Name: 'name', Value: name }], null, (err, data) =>
                     err ? reject(err) : resolve(data.getAccessToken().getJwtToken())
                 )
             );
