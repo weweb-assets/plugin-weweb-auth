@@ -14,16 +14,13 @@ export default {
     cognitoUserPool: null,
     cognitoUser: null,
     async onLoad() {
-        const accessToken = window.vm.config.globalProperties.$cookie.getCookie(ACCESS_COOKIE_NAME);
-        // const refreshToken = window.vm.config.globalProperties.$cookie.getCookie(REFRESH_COOKIE_NAME);
-
         this.cognitoUserPool = new CognitoUserPool({
             ClientId: this.settings.publicData.clientId || 'pjvp5a6rmui7t11eqbfjrsmlq',
             UserPoolId: this.settings.publicData.userPoolId || 'us-east-1_LFXlGRVHi',
         });
         this.cognitoUser = this.cognitoUserPool.getCurrentUser();
 
-        if (accessToken) await this.fetchUser();
+        if (this.cognitoUser) await this.fetchUser();
     },
     /*=============================================m_ÔÔ_m=============================================\
         Auth API
@@ -154,12 +151,22 @@ export default {
         wwLib.wwVariable.updateValue(`${this.id}-refreshToken`, null);
     },
     async fetchUser() {
-        // const accessToken = wwLib.wwVariable.getValue(`${this.id}-accessToken`);
         try {
-            // const user = this.cognitoUserPool.getCurrentUser();
-            // wwLib.wwVariable.updateValue(`${this.id}-user`, user);
-            // wwLib.wwVariable.updateValue(`${this.id}-isAuthenticated`, true);
-            // return user;
+            const awsUser = await new Promise((resolve, reject) =>
+                this.cognitoUser.getUserData((err, data) => (err ? reject(err) : resolve(data)))
+            );
+            const user = {
+                ...awsUser.UserAttributes.reduce(
+                    (obj, attribute) => ({ ...obj, [attribute.Name]: attribute.Value }),
+                    {}
+                ),
+                id: awsUser.Username,
+                sub: undefined,
+            };
+
+            wwLib.wwVariable.updateValue(`${this.id}-user`, user);
+            wwLib.wwVariable.updateValue(`${this.id}-isAuthenticated`, true);
+            return user;
         } catch (err) {
             this.logout();
             throw err;
@@ -183,13 +190,12 @@ export default {
     },
     async signUp(email, password, name) {
         try {
-            const { authToken } = await new Promise((resolve, reject) =>
+            await new Promise((resolve, reject) =>
                 this.cognitoUserPool.signUp(email, password, [{ Name: 'name', Value: name }], null, (err, data) =>
-                    err ? reject(err) : resolve(data.getAccessToken().getJwtToken())
+                    err ? reject(err) : resolve(data)
                 )
             );
-            this.storeToken(authToken);
-            return await this.fetchUser();
+            return await this.login(email, password);
         } catch (err) {
             this.logout();
             throw err;
