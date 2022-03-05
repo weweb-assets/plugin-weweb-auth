@@ -18,9 +18,10 @@ export default {
         // const refreshToken = window.vm.config.globalProperties.$cookie.getCookie(REFRESH_COOKIE_NAME);
 
         this.cognitoUserPool = new CognitoUserPool({
-            ClientId: this.settings.publicData.clientId,
-            UserPoolId: this.settings.publicData.userPoolId,
+            ClientId: this.settings.publicData.clientId || 'pjvp5a6rmui7t11eqbfjrsmlq',
+            UserPoolId: this.settings.publicData.userPoolId || 'us-east-1_LFXlGRVHi',
         });
+        this.cognitoUser = this.cognitoUserPool.getCurrentUser();
 
         if (accessToken) await this.fetchUser();
     },
@@ -59,9 +60,12 @@ export default {
     async createUser(data) {
         try {
             const websiteId = wwLib.wwWebsiteData.getInfo().id;
-            await axios.post(`${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users`, data, {
-                headers: wwLib.wwApiRequests._getAuthHeader(),
-            });
+            const { data: user } = await axios.post(
+                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users`,
+                data,
+                { headers: wwLib.wwApiRequests._getAuthHeader() }
+            );
+            return user;
         } catch (err) {
             if (err.response && err.response.data.message) throw new Error(err.response.data.message);
             throw err;
@@ -148,6 +152,18 @@ export default {
         wwLib.wwVariable.updateValue(`${this.id}-accessToken`, null);
         window.vm.config.globalProperties.$cookie.removeCookie(REFRESH_COOKIE_NAME);
         wwLib.wwVariable.updateValue(`${this.id}-refreshToken`, null);
+    },
+    async fetchUser() {
+        // const accessToken = wwLib.wwVariable.getValue(`${this.id}-accessToken`);
+        try {
+            // const user = this.cognitoUserPool.getCurrentUser();
+            // wwLib.wwVariable.updateValue(`${this.id}-user`, user);
+            // wwLib.wwVariable.updateValue(`${this.id}-isAuthenticated`, true);
+            // return user;
+        } catch (err) {
+            this.logout();
+            throw err;
+        }
     },
     async login(email, password) {
         try {
