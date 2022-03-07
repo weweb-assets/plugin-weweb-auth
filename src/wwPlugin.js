@@ -175,7 +175,7 @@ export default {
     async login(email, password) {
         try {
             this.cognitoUser = new CognitoUser({ Username: email, Pool: this.cognitoUserPool });
-            const storage = new CookieStorage({ domain: window.location.host });
+            const storage = new CookieStorage({ domain: window.location.hostname });
 
             const { accessToken } = await new Promise((resolve, reject) =>
                 this.cognitoUser.authenticateUser(
