@@ -13,11 +13,13 @@ export default {
     \================================================================================================*/
     cognitoUserPool: null,
     cognitoUser: null,
+    cognitoStorage: null,
     async onLoad() {
         this.cognitoUserPool = new CognitoUserPool({
             ClientId: this.settings.publicData.clientId || 'pjvp5a6rmui7t11eqbfjrsmlq',
             UserPoolId: this.settings.publicData.userPoolId || 'us-east-1_LFXlGRVHi',
         });
+        this.cognitoStorage = new CookieStorage({ domain: window.location.hostname, secure: false });
         this.cognitoUser = this.cognitoUserPool.getCurrentUser();
 
         if (this.cognitoUser) await this.fetchUser();
@@ -174,17 +176,17 @@ export default {
     },
     async login(email, password) {
         try {
-            this.cognitoUser = new CognitoUser({ Username: email, Pool: this.cognitoUserPool });
-            const storage = new CookieStorage({ domain: window.location.hostname, secure: false });
+            this.cognitoUser = new CognitoUser({
+                Username: email,
+                Pool: this.cognitoUserPool,
+                Storage: this.cognitoStorage,
+            });
 
             const { accessToken } = await new Promise((resolve, reject) =>
-                this.cognitoUser.authenticateUser(
-                    new AuthenticationDetails({ Username: email, Password: password, Storage: storage }),
-                    {
-                        onSuccess: data => resolve({ accessToken: data.getAccessToken().getJwtToken() }),
-                        onFailure: err => reject(err),
-                    }
-                )
+                this.cognitoUser.authenticateUser(new AuthenticationDetails({ Username: email, Password: password }), {
+                    onSuccess: data => resolve({ accessToken: data.getAccessToken().getJwtToken() }),
+                    onFailure: err => reject(err),
+                })
             );
             this.storeToken(accessToken);
             return await this.fetchUser();
