@@ -179,7 +179,7 @@ export default {
 
             const { accessToken } = await new Promise((resolve, reject) =>
                 this.cognitoUser.authenticateUser(
-                    new AuthenticationDetails({ Username: email, Password: password, Storage, storage }),
+                    new AuthenticationDetails({ Username: email, Password: password, Storage: storage }),
                     {
                         onSuccess: data => resolve({ accessToken: data.getAccessToken().getJwtToken() }),
                         onFailure: err => reject(err),
