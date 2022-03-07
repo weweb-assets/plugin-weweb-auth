@@ -15,11 +15,12 @@ export default {
     cognitoUser: null,
     cognitoStorage: null,
     async onLoad() {
+        this.cognitoStorage = new CookieStorage({ domain: window.location.hostname, secure: false });
         this.cognitoUserPool = new CognitoUserPool({
             ClientId: this.settings.publicData.clientId || 'pjvp5a6rmui7t11eqbfjrsmlq',
             UserPoolId: this.settings.publicData.userPoolId || 'us-east-1_LFXlGRVHi',
+            Storage: this.cognitoStorage,
         });
-        this.cognitoStorage = new CookieStorage({ domain: window.location.hostname, secure: false });
         this.cognitoUser = this.cognitoUserPool.getCurrentUser();
 
         if (this.cognitoUser) await this.fetchUser();
