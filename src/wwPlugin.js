@@ -1,4 +1,4 @@
-import { CognitoUserPool, CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
+import { CognitoUserPool, CognitoUser, AuthenticationDetails, CookieStorage } from 'amazon-cognito-identity-js';
 /* wwEditor:start */
 import './components/Functions/Login.vue';
 import './components/Functions/SignUp.vue';
@@ -175,11 +175,16 @@ export default {
     async login(email, password) {
         try {
             this.cognitoUser = new CognitoUser({ Username: email, Pool: this.cognitoUserPool });
+            const storage = new CookieStorage({ domain: window.location.host });
+
             const { accessToken } = await new Promise((resolve, reject) =>
-                this.cognitoUser.authenticateUser(new AuthenticationDetails({ Username: email, Password: password }), {
-                    onSuccess: data => resolve({ accessToken: data.getAccessToken().getJwtToken() }),
-                    onFailure: err => reject(err),
-                })
+                this.cognitoUser.authenticateUser(
+                    new AuthenticationDetails({ Username: email, Password: password, Storage, storage }),
+                    {
+                        onSuccess: data => resolve({ accessToken: data.getAccessToken().getJwtToken() }),
+                        onFailure: err => reject(err),
+                    }
+                )
             );
             this.storeToken(accessToken);
             return await this.fetchUser();
