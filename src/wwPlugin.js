@@ -2,6 +2,7 @@ import { CognitoUserPool, CognitoUser, AuthenticationDetails, CookieStorage } fr
 /* wwEditor:start */
 import './components/Functions/Login.vue';
 import './components/Functions/SignUp.vue';
+import './components/Functions/UpdateUserProfile.vue';
 /* wwEditor:end */
 
 const ACCESS_COOKIE_NAME = 'ww-auth-access-token';
@@ -207,6 +208,25 @@ export default {
                 )
             );
             return await this.login(email, password);
+        } catch (err) {
+            this.logout();
+            throw err;
+        }
+    },
+    async updateUserProfile(email, name, picture, attributes) {
+        try {
+            await new Promise((resolve, reject) =>
+                this.cognitoUser.updateAttributes(
+                    [
+                        { Name: 'email', Value: email },
+                        { Name: 'name', Value: name },
+                        { Name: 'picture', Value: picture },
+                        ...attributes.map(attribute => ({ Name: attribute.key, Value: attribute.value })),
+                    ],
+                    (err, data) => (err ? reject(err) : resolve(data))
+                )
+            );
+            return await this.fetchUser();
         } catch (err) {
             this.logout();
             throw err;

@@ -42,6 +42,23 @@ export default {
             /* wwEditor:end */
         },
         {
+            name: 'Update User Profile',
+            code: 'updateUserProfile',
+            parameters: [
+                { name: 'Email', type: 'string' },
+                { name: 'Name', type: 'string' },
+                { name: 'Picture', type: 'string' },
+                { name: 'Custom attributes', type: 'object' },
+            ],
+            isAsync: true,
+            /* wwEditor:start */
+            edit: () => import('./src/components/Functions/UpdateUserProfile.vue'),
+            getIsValid([email]) {
+                return !!email;
+            },
+            /* wwEditor:end */
+        },
+        {
             name: 'Logout',
             code: 'logout',
             parameters: [],
