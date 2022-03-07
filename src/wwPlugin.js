@@ -155,6 +155,9 @@ export default {
     },
     async fetchUser() {
         try {
+            await new Promise((resolve, reject) =>
+                this.cognitoUser.getSession((err, data) => (err ? reject(err) : resolve(data)))
+            );
             const awsUser = await new Promise((resolve, reject) =>
                 this.cognitoUser.getUserData((err, data) => (err ? reject(err) : resolve(data)))
             );
