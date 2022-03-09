@@ -59,7 +59,12 @@ export default {
     },
     async importUsers(users, isInvitation) {
         for (const user of users) {
-            await this.createUser({ ...user, attributes: [] }, isInvitation);
+            try {
+                await this.createUser({ ...user, attributes: [] }, isInvitation);
+            } catch (err) {
+                wwLib.wwLog.error(err);
+                wwLib.wwNotification.open({ text: err.message, color: 'red' });
+            }
         }
     },
     exportUsers(users) {
