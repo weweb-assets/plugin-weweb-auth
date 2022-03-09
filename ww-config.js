@@ -5,8 +5,6 @@ export default {
     },
     variables: [
         { name: 'user', value: 'user', type: 'object', defaultValue: null },
-        { name: 'accessToken', value: 'accessToken', type: 'string', defaultValue: null },
-        { name: 'refreshToken', value: 'refreshToken', type: 'string', defaultValue: null },
         { name: 'isAuthenticated', value: 'isAuthenticated', type: 'boolean', defaultValue: false },
     ],
     functions: [
@@ -47,7 +45,6 @@ export default {
             parameters: [
                 { name: 'Email', type: 'string' },
                 { name: 'Name', type: 'string' },
-                { name: 'Picture', type: 'string' },
                 { name: 'Custom attributes', type: 'array' },
             ],
             isAsync: true,

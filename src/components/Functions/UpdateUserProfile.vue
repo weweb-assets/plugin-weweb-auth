@@ -16,14 +16,6 @@
         @update:modelValue="setName"
     />
     <wwEditorInputRow
-        label="Picture"
-        type="query"
-        :model-value="picture"
-        bindable
-        placeholder="Enter a picture URL"
-        @update:modelValue="setPicture"
-    />
-    <wwEditorInputRow
         label="Custom attributes"
         type="array"
         :model-value="attributes"
@@ -65,11 +57,8 @@ export default {
         name() {
             return this.args[1];
         },
-        picture() {
-            return this.args[2];
-        },
         attributes() {
-            return this.args[3];
+            return this.args[2];
         },
         userAttributesOptions() {
             return this.plugin.userAttributes.map(attribute => ({
@@ -80,16 +69,13 @@ export default {
     },
     methods: {
         setEmail(email) {
-            this.$emit('update:args', [email, this.name, this.picture, this.attributes]);
+            this.$emit('update:args', [email, this.name, this.attributes]);
         },
         setName(name) {
-            this.$emit('update:args', [this.email, name, this.picture, this.attributes]);
-        },
-        setPicture(picture) {
-            this.$emit('update:args', [this.email, this.name, picture, this.attributes]);
+            this.$emit('update:args', [this.email, name, this.attributes]);
         },
         setAttributes(attributes) {
-            this.$emit('update:args', [this.email, this.name, this.picture, attributes]);
+            this.$emit('update:args', [this.email, this.name, attributes]);
         },
     },
 };

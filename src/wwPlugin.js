@@ -35,6 +35,7 @@ export default {
     /* wwEditor:start */
     // async getRoles() {},
     userAttributes: [
+        { label: 'Picture', key: 'picture' },
         { label: 'Given name', key: 'given_name' },
         { label: 'Family name', key: 'family_name' },
         { label: 'Middle name', key: 'middle_name' },
@@ -144,18 +145,14 @@ export default {
     storeToken(accessToken, refreshToken) {
         if (accessToken) {
             window.vm.config.globalProperties.$cookie.setCookie(ACCESS_COOKIE_NAME, accessToken);
-            wwLib.wwVariable.updateValue(`${this.id}-accessToken`, accessToken);
         }
         if (refreshToken) {
             window.vm.config.globalProperties.$cookie.setCookie(REFRESH_COOKIE_NAME, refreshToken);
-            wwLib.wwVariable.updateValue(`${this.id}-refreshToken`, refreshToken);
         }
     },
     removeToken() {
         window.vm.config.globalProperties.$cookie.removeCookie(ACCESS_COOKIE_NAME);
-        wwLib.wwVariable.updateValue(`${this.id}-accessToken`, null);
         window.vm.config.globalProperties.$cookie.removeCookie(REFRESH_COOKIE_NAME);
-        wwLib.wwVariable.updateValue(`${this.id}-refreshToken`, null);
     },
     async fetchUser() {
         try {
@@ -216,14 +213,13 @@ export default {
             throw err;
         }
     },
-    async updateUserProfile(email, name, picture, attributes) {
+    async updateUserProfile(email, name, attributes) {
         try {
             await new Promise((resolve, reject) =>
                 this.cognitoUser.updateAttributes(
                     [
                         { Name: 'email', Value: email || '' },
                         { Name: 'name', Value: name || '' },
-                        { Name: 'picture', Value: picture || '' },
                         ...attributes.map(attribute => ({ Name: attribute.key, Value: attribute.value || '' })),
                     ],
                     (err, data) => (err ? reject(err) : resolve(data))
