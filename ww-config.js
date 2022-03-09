@@ -48,13 +48,55 @@ export default {
                 { name: 'Email', type: 'string' },
                 { name: 'Name', type: 'string' },
                 { name: 'Picture', type: 'string' },
-                { name: 'Custom attributes', type: 'object' },
+                { name: 'Custom attributes', type: 'array' },
             ],
             isAsync: true,
             /* wwEditor:start */
             edit: () => import('./src/components/Functions/UpdateUserProfile.vue'),
             getIsValid([email]) {
                 return !!email;
+            },
+            /* wwEditor:end */
+        },
+        {
+            name: 'Change Password',
+            code: 'changePassword',
+            parameters: [
+                { name: 'Old Password', type: 'string' },
+                { name: 'New Password', type: 'string' },
+            ],
+            isAsync: true,
+            /* wwEditor:start */
+            edit: () => import('./src/components/Functions/ChangePassword.vue'),
+            getIsValid([oldPassword, newPassword]) {
+                return !!oldPassword && !!newPassword;
+            },
+            /* wwEditor:end */
+        },
+        {
+            name: 'Forgot Password',
+            code: 'forgotPassword',
+            parameters: [{ name: 'Email', type: 'string' }],
+            isAsync: true,
+            /* wwEditor:start */
+            edit: () => import('./src/components/Functions/ForgotPassword.vue'),
+            getIsValid([email]) {
+                return email;
+            },
+            /* wwEditor:end */
+        },
+        {
+            name: 'Confirm Password',
+            code: 'confirmPassword',
+            parameters: [
+                { name: 'Verification Code', type: 'string' },
+                { name: 'New Password', type: 'string' },
+            ],
+            isAsync: true,
+            /* wwEditor:start */
+            edit: () => import('./src/components/Functions/ConfirmPassword.vue'),
+            getIsValid([verificationCode, newPassword]) {
+                return !!verificationCode && !!newPassword;
             },
             /* wwEditor:end */
         },

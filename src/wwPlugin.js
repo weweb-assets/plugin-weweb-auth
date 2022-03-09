@@ -3,6 +3,9 @@ import { CognitoUserPool, CognitoUser, AuthenticationDetails, CookieStorage } fr
 import './components/Functions/Login.vue';
 import './components/Functions/SignUp.vue';
 import './components/Functions/UpdateUserProfile.vue';
+import './components/Functions/ChangePassword.vue';
+import './components/Functions/ConfirmPassword.vue';
+import './components/Functions/ForgotPassword.vue';
 /* wwEditor:end */
 
 const ACCESS_COOKIE_NAME = 'ww-auth-access-token';
@@ -218,10 +221,10 @@ export default {
             await new Promise((resolve, reject) =>
                 this.cognitoUser.updateAttributes(
                     [
-                        { Name: 'email', Value: email },
-                        { Name: 'name', Value: name },
-                        { Name: 'picture', Value: picture },
-                        ...attributes.map(attribute => ({ Name: attribute.key, Value: attribute.value })),
+                        { Name: 'email', Value: email || '' },
+                        { Name: 'name', Value: name || '' },
+                        { Name: 'picture', Value: picture || '' },
+                        ...attributes.map(attribute => ({ Name: attribute.key, Value: attribute.value || '' })),
                     ],
                     (err, data) => (err ? reject(err) : resolve(data))
                 )
@@ -231,6 +234,40 @@ export default {
             this.logout();
             throw err;
         }
+    },
+    async changePassword(oldPassword, newPassword) {
+        try {
+            await new Promise((resolve, reject) =>
+                this.cognitoUser.changePassword(oldPassword, newPassword, (err, data) =>
+                    err ? reject(err) : resolve(data)
+                )
+            );
+        } catch (err) {
+            this.logout();
+            throw err;
+        }
+    },
+    async forgotPassword(email) {
+        this.cognitoUser = new CognitoUser({
+            Username: email,
+            Pool: this.cognitoUserPool,
+            Storage: this.cognitoStorage,
+        });
+        await new Promise((resolve, reject) =>
+            this.cognitoUser.forgotPassword({
+                onSuccess: data => resolve(data),
+                onFailure: err => reject(err),
+                inputVerificationCode: data => resolve(data),
+            })
+        );
+    },
+    async confirmPassword(verificationCode, newPassword) {
+        await new Promise((resolve, reject) =>
+            this.cognitoUser.confirmPassword(verificationCode, newPassword, {
+                onSuccess: () => resolve(),
+                onFailure: err => reject(err),
+            })
+        );
     },
     logout() {
         this.removeToken();
