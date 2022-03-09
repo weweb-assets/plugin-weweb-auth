@@ -59,7 +59,7 @@ export default {
     },
     async importUsers(users, isInvitation) {
         for (const user of users) {
-            await this.createUser(user, isInvitation);
+            await this.createUser({ ...user, attributes: [] }, isInvitation);
         }
     },
     exportUsers(users) {
