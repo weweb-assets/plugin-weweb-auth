@@ -21,7 +21,7 @@
         :model-value="attributes"
         bindable
         @update:modelValue="setAttributes"
-        @add-item="setAttributes([...attributes, { type: 'string' }])"
+        @add-item="setAttributes([...(attributes || []), { type: 'string' }])"
     >
         <template #default="{ item, setItem }">
             <wwEditorInputRow
@@ -47,7 +47,7 @@
 export default {
     props: {
         plugin: { type: Object, required: true },
-        args: { type: Array, default: () => [null, null, null, []] },
+        args: { type: Array, default: () => [null, null, []] },
     },
     emits: ['update:args'],
     computed: {

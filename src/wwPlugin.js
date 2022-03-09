@@ -19,7 +19,7 @@ export default {
     cognitoUser: null,
     cognitoStorage: null,
     async onLoad() {
-        this.cognitoStorage = new CookieStorage({ domain: window.location.hostname, secure: false });
+        this.cognitoStorage = new CookieStorage({ domain: window.location.hostname });
         this.cognitoUserPool = new CognitoUserPool({
             ClientId: this.settings.publicData.clientId || 'pjvp5a6rmui7t11eqbfjrsmlq',
             UserPoolId: this.settings.publicData.userPoolId || 'us-east-1_LFXlGRVHi',
@@ -36,7 +36,7 @@ export default {
     // async getRoles() {},
     userAttributes: [
         { label: 'Picture', key: 'picture' },
-        { label: 'Given name', key: 'given_name' },
+        { label: 'Given name', key: 'gisven_name' },
         { label: 'Family name', key: 'family_name' },
         { label: 'Middle name', key: 'middle_name' },
         { label: 'Nickname', key: 'nickname' },
@@ -61,6 +61,10 @@ export default {
         for (const user of users) {
             await this.createUser(user);
         }
+    },
+    exportUsers(users) {
+        const titles = [...new Set(users.map(user => Object.keys(user)).flat())];
+        return [titles, ...users.map(user => titles.map(title => user[title]))];
     },
     async createUser(data) {
         try {
@@ -220,7 +224,7 @@ export default {
                     [
                         { Name: 'email', Value: email || '' },
                         { Name: 'name', Value: name || '' },
-                        ...attributes.map(attribute => ({ Name: attribute.key, Value: attribute.value || '' })),
+                        ...(attributes || []).map(attribute => ({ Name: attribute.key, Value: attribute.value || '' })),
                     ],
                     (err, data) => (err ? reject(err) : resolve(data))
                 )
