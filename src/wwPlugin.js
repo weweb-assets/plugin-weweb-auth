@@ -57,21 +57,21 @@ export default {
 
         return response.data;
     },
-    async importUsers(users) {
+    async importUsers(users, isInvitation) {
         for (const user of users) {
-            await this.createUser(user);
+            await this.createUser(user, isInvitation);
         }
     },
     exportUsers(users) {
         const titles = [...new Set(users.map(user => Object.keys(user)).flat())];
         return [titles, ...users.map(user => titles.map(title => user[title]))];
     },
-    async createUser(data) {
+    async createUser(data, isInvitation) {
         try {
             const websiteId = wwLib.wwWebsiteData.getInfo().id;
             const { data: user } = await axios.post(
                 `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users`,
-                data,
+                { ...data, isInvitation },
                 { headers: wwLib.wwApiRequests._getAuthHeader() }
             );
             return user;
