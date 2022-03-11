@@ -48,14 +48,6 @@ export default {
         { label: 'Address', key: 'address' },
         { label: 'Phone number', key: 'phone_number' },
     ],
-    async getRoles() {
-        const websiteId = wwLib.wwWebsiteData.getInfo().id;
-        const response = await axios.get(`${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/roles`, {
-            headers: wwLib.wwApiRequests._getAuthHeader(),
-        });
-
-        return response.data;
-    },
     async getUsers() {
         const websiteId = wwLib.wwWebsiteData.getInfo().id;
         const response = await axios.get(`${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users`, {
@@ -169,6 +161,38 @@ export default {
             if (err.response && err.response.data.message) throw new Error(err.response.data.message);
             throw err;
         }
+    },
+    async getRoles() {
+        const websiteId = wwLib.wwWebsiteData.getInfo().id;
+        const { data } = await axios.get(`${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/roles`, {
+            headers: wwLib.wwApiRequests._getAuthHeader(),
+        });
+
+        return data;
+    },
+    async createRole(role) {
+        const websiteId = wwLib.wwWebsiteData.getInfo().id;
+        const { data } = await axios.post(
+            `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/roles`,
+            role,
+            { headers: wwLib.wwApiRequests._getAuthHeader() }
+        );
+
+        return data;
+    },
+    async updateRole(role, data) {
+        const websiteId = wwLib.wwWebsiteData.getInfo().id;
+        await axios.patch(
+            `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/roles/${role.id}`,
+            data,
+            { headers: wwLib.wwApiRequests._getAuthHeader() }
+        );
+    },
+    async deleteRole(role) {
+        const websiteId = wwLib.wwWebsiteData.getInfo().id;
+        await axios.delete(`${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/roles/${role.id}`, {
+            headers: wwLib.wwApiRequests._getAuthHeader(),
+        });
     },
     /* wwEditor:end */
     /*=============================================m_ÔÔ_m=============================================\
