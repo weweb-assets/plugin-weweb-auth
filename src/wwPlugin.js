@@ -113,7 +113,7 @@ export default {
             const websiteId = wwLib.wwWebsiteData.getInfo().id;
             await axios.patch(
                 `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users/${user.id}/password`,
-                password,
+                { password },
                 { headers: wwLib.wwApiRequests._getAuthHeader() }
             );
         } catch (err) {
