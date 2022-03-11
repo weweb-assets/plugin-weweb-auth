@@ -4,6 +4,7 @@
         type="query"
         :model-value="email"
         bindable
+        required
         placeholder="Enter a email"
         @update:modelValue="setEmail"
     />

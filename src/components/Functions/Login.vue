@@ -4,6 +4,7 @@
         type="query"
         :model-value="email"
         bindable
+        required
         placeholder="Enter a email"
         @update:modelValue="setEmail"
     />
@@ -12,6 +13,7 @@
         type="query"
         :model-value="password"
         bindable
+        required
         placeholder="Enter a password"
         @update:modelValue="setPassword"
     />

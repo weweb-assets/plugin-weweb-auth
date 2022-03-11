@@ -21,8 +21,8 @@ export default {
     async onLoad() {
         this.cognitoStorage = new CookieStorage({ domain: window.location.hostname });
         this.cognitoUserPool = new CognitoUserPool({
-            ClientId: this.settings.publicData.clientId || 'pjvp5a6rmui7t11eqbfjrsmlq',
-            UserPoolId: this.settings.publicData.userPoolId || 'us-east-1_LFXlGRVHi',
+            ClientId: this.settings.publicData.clientId,
+            UserPoolId: this.settings.publicData.userPoolId,
             Storage: this.cognitoStorage,
         });
         this.cognitoUser = this.cognitoUserPool.getCurrentUser();
@@ -33,7 +33,6 @@ export default {
         Auth API
     \================================================================================================*/
     /* wwEditor:start */
-    // async getRoles() {},
     userAttributes: [
         { label: 'Picture', key: 'picture' },
         { label: 'Given name', key: 'gisven_name' },
@@ -49,6 +48,14 @@ export default {
         { label: 'Address', key: 'address' },
         { label: 'Phone number', key: 'phone_number' },
     ],
+    async getRoles() {
+        const websiteId = wwLib.wwWebsiteData.getInfo().id;
+        const response = await axios.get(`${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/roles`, {
+            headers: wwLib.wwApiRequests._getAuthHeader(),
+        });
+
+        return response.data;
+    },
     async getUsers() {
         const websiteId = wwLib.wwWebsiteData.getInfo().id;
         const response = await axios.get(`${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users`, {
@@ -101,12 +108,25 @@ export default {
             throw err;
         }
     },
-    async resetUserPassword(user) {
+    async updateUserPassword(user, password) {
         try {
             const websiteId = wwLib.wwWebsiteData.getInfo().id;
             await axios.patch(
-                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users/${user.id}/password/reset`,
-                {},
+                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users/${user.id}/password`,
+                password,
+                { headers: wwLib.wwApiRequests._getAuthHeader() }
+            );
+        } catch (err) {
+            if (err.response && err.response.data.message) throw new Error(err.response.data.message);
+            throw err;
+        }
+    },
+    async updateUserRoles(user, roles) {
+        try {
+            const websiteId = wwLib.wwWebsiteData.getInfo().id;
+            await axios.patch(
+                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users/${user.id}/roles`,
+                roles,
                 { headers: wwLib.wwApiRequests._getAuthHeader() }
             );
         } catch (err) {

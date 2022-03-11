@@ -4,6 +4,7 @@
         type="query"
         :model-value="oldPassword"
         bindable
+        required
         placeholder="Enter the old password"
         @update:modelValue="setOldPassword"
     />
@@ -12,6 +13,7 @@
         type="query"
         :model-value="newPassword"
         bindable
+        required
         placeholder="Enter the new password"
         @update:modelValue="setNewPassword"
     />

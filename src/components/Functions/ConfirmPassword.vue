@@ -4,6 +4,7 @@
         type="query"
         :model-value="verificationCode"
         bindable
+        required
         placeholder="Enter the verification code"
         @update:modelValue="setVerificationCode"
     />
@@ -12,6 +13,7 @@
         type="query"
         :model-value="newPassword"
         bindable
+        required
         placeholder="Enter the new password"
         @update:modelValue="setNewPassword"
     />
