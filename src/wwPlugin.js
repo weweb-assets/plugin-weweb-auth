@@ -170,27 +170,27 @@ export default {
 
         return data;
     },
-    async createRole(role) {
+    async createRole(name) {
         const websiteId = wwLib.wwWebsiteData.getInfo().id;
         const { data } = await axios.post(
             `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/roles`,
-            role,
+            { name },
             { headers: wwLib.wwApiRequests._getAuthHeader() }
         );
 
         return data;
     },
-    async updateRole(role, data) {
+    async updateRole(roleId, name) {
         const websiteId = wwLib.wwWebsiteData.getInfo().id;
         await axios.patch(
-            `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/roles/${role.id}`,
-            data,
+            `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/roles/${roleId}`,
+            { name },
             { headers: wwLib.wwApiRequests._getAuthHeader() }
         );
     },
-    async deleteRole(role) {
+    async deleteRole(roleId) {
         const websiteId = wwLib.wwWebsiteData.getInfo().id;
-        await axios.delete(`${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/roles/${role.id}`, {
+        await axios.delete(`${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/roles/${roleId}`, {
             headers: wwLib.wwApiRequests._getAuthHeader(),
         });
     },
