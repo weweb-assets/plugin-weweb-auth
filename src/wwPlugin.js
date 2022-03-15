@@ -1,5 +1,7 @@
 import { CognitoUserPool, CognitoUser, AuthenticationDetails, CookieStorage } from 'amazon-cognito-identity-js';
 /* wwEditor:start */
+import './components/Redirections/SettingsEdit.vue';
+import './components/Redirections/SettingsSummary.vue';
 import './components/Functions/Login.vue';
 import './components/Functions/SignUp.vue';
 import './components/Functions/UpdateUserProfile.vue';
@@ -28,13 +30,13 @@ export default {
             Storage: this.cognitoStorage,
         });
         this.cognitoUser = this.cognitoUserPool.getCurrentUser();
-
         if (this.cognitoUser) await this.fetchUser();
     },
     /*=============================================m_ÔÔ_m=============================================\
         Auth API
     \================================================================================================*/
     /* wwEditor:start */
+    /* Users */
     userAttributes: [
         { label: 'Picture', key: 'picture' },
         { label: 'Given name', key: 'gisven_name' },
@@ -50,7 +52,7 @@ export default {
         { label: 'Address', key: 'address' },
         { label: 'Phone number', key: 'phone_number' },
     ],
-    async getUsers() {
+    async adminGetUsers() {
         const response = await axios.get(
             `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users`,
             { headers: wwLib.wwApiRequests._getAuthHeader() }
@@ -58,24 +60,7 @@ export default {
 
         return response.data;
     },
-    async importUsers(users, isInvitation) {
-        for (const user of users) {
-            try {
-                await this.createUser(
-                    { email: user.email, name: user.name, password: user.password, attributes: [] },
-                    isInvitation
-                );
-            } catch (err) {
-                wwLib.wwLog.error(err);
-                wwLib.wwNotification.open({ text: err.message, color: 'red' });
-            }
-        }
-    },
-    exportUsers(users) {
-        const titles = [...new Set(users.map(user => Object.keys(user)).flat())];
-        return [titles, ...users.map(user => titles.map(title => user[title]))];
-    },
-    async createUser(data, isInvitation) {
+    async adminCreateUser(data, isInvitation) {
         try {
             const { data: user } = await axios.post(
                 `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users`,
@@ -88,19 +73,20 @@ export default {
             throw err;
         }
     },
-    async updateUser(user, data) {
+    async adminUpdateUser(user, data) {
         try {
-            await axios.patch(
+            const { data: userUpdated } = await axios.patch(
                 `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users/${user.id}`,
                 data,
                 { headers: wwLib.wwApiRequests._getAuthHeader() }
             );
+            return userUpdated;
         } catch (err) {
             if (err.response && err.response.data.message) throw new Error(err.response.data.message);
             throw err;
         }
     },
-    async updateUserPassword(user, password) {
+    async adminUpdateUserPassword(user, password) {
         try {
             await axios.patch(
                 `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users/${user.id}/password`,
@@ -112,7 +98,7 @@ export default {
             throw err;
         }
     },
-    async updateUserRoles(user, roles) {
+    async adminUpdateUserRoles(user, roles) {
         try {
             await axios.put(
                 `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users/${user.id}/roles`,
@@ -124,7 +110,7 @@ export default {
             throw err;
         }
     },
-    async blockUser(user) {
+    async adminBlockUser(user) {
         try {
             await axios.delete(
                 `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users/${user.id}/block`,
@@ -135,7 +121,7 @@ export default {
             throw err;
         }
     },
-    async unblockUser(user) {
+    async adminUnblockUser(user) {
         try {
             await axios.delete(
                 `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users/${user.id}/unblock`,
@@ -146,7 +132,7 @@ export default {
             throw err;
         }
     },
-    async deleteUser(user) {
+    async adminDeleteUser(user) {
         try {
             await axios.delete(
                 `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users/${user.id}`,
@@ -157,7 +143,25 @@ export default {
             throw err;
         }
     },
-    async getRoles() {
+    async adminImportUsers(users, isInvitation) {
+        for (const user of users) {
+            try {
+                await this.adminCreateUser(
+                    { email: user.email, name: user.name, password: user.password, attributes: [] },
+                    isInvitation
+                );
+            } catch (err) {
+                wwLib.wwLog.error(err);
+                wwLib.wwNotification.open({ text: err.message, color: 'red' });
+            }
+        }
+    },
+    adminExportUsers(users) {
+        const titles = [...new Set(users.map(user => Object.keys(user)).flat())];
+        return [titles, ...users.map(user => titles.map(title => user[title]))];
+    },
+    /* Roles */
+    async adminGetRoles() {
         const { data } = await axios.get(
             `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/roles`,
             { headers: wwLib.wwApiRequests._getAuthHeader() }
@@ -165,7 +169,7 @@ export default {
 
         return data;
     },
-    async createRole(name) {
+    async adminCreateRole(name) {
         const { data } = await axios.post(
             `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/roles`,
             { name },
@@ -174,7 +178,7 @@ export default {
 
         return data;
     },
-    async updateRole(roleId, name) {
+    async adminUpdateRole(roleId, name) {
         const { data } = await axios.patch(
             `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/roles/${roleId}`,
             { name },
@@ -183,7 +187,7 @@ export default {
 
         return data;
     },
-    async deleteRole(roleId) {
+    async adminDeleteRole(roleId) {
         await axios.delete(
             `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/roles/${roleId}`,
             { headers: wwLib.wwApiRequests._getAuthHeader() }

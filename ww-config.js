@@ -1,6 +1,17 @@
 export default {
     editor: {
-        settings: [],
+        settings: [
+            {
+                label: 'Define redirections (URLs)',
+                icon: 'open-out',
+                edit: () => import('./src/components/Redirections/SettingsEdit.vue'),
+                summary: () => import('./src/components/Redirections/SettingsSummary.vue'),
+                getIsValid(settings) {
+                    const { afterNotSignInPageId } = settings.publicData;
+                    return !!afterNotSignInPageId;
+                },
+            },
+        ],
         // designSystemId: 'ec2eebfe-499b-43c4-b260-80ee5a4d9504',
     },
     variables: [
