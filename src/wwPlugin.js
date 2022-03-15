@@ -182,11 +182,13 @@ export default {
     },
     async updateRole(roleId, name) {
         const websiteId = wwLib.wwWebsiteData.getInfo().id;
-        await axios.patch(
+        const { data } = await axios.patch(
             `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/roles/${roleId}`,
             { name },
             { headers: wwLib.wwApiRequests._getAuthHeader() }
         );
+
+        return data;
     },
     async deleteRole(roleId) {
         const websiteId = wwLib.wwWebsiteData.getInfo().id;
