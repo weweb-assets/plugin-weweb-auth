@@ -15,10 +15,12 @@ export default {
     /*=============================================m_ÔÔ_m=============================================\
         Plugin API
     \================================================================================================*/
+    websiteId: null,
     cognitoUserPool: null,
     cognitoUser: null,
     cognitoStorage: null,
     async onLoad() {
+        this.websiteId = wwLib.wwWebsiteData.getInfo().id;
         this.cognitoStorage = new CookieStorage({ domain: window.location.hostname });
         this.cognitoUserPool = new CognitoUserPool({
             ClientId: this.settings.publicData.clientId,
@@ -49,10 +51,10 @@ export default {
         { label: 'Phone number', key: 'phone_number' },
     ],
     async getUsers() {
-        const websiteId = wwLib.wwWebsiteData.getInfo().id;
-        const response = await axios.get(`${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users`, {
-            headers: wwLib.wwApiRequests._getAuthHeader(),
-        });
+        const response = await axios.get(
+            `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users`,
+            { headers: wwLib.wwApiRequests._getAuthHeader() }
+        );
 
         return response.data;
     },
@@ -75,9 +77,8 @@ export default {
     },
     async createUser(data, isInvitation) {
         try {
-            const websiteId = wwLib.wwWebsiteData.getInfo().id;
             const { data: user } = await axios.post(
-                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users`,
+                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users`,
                 { ...data, isInvitation },
                 { headers: wwLib.wwApiRequests._getAuthHeader() }
             );
@@ -89,9 +90,8 @@ export default {
     },
     async updateUser(user, data) {
         try {
-            const websiteId = wwLib.wwWebsiteData.getInfo().id;
             await axios.patch(
-                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users/${user.id}`,
+                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users/${user.id}`,
                 data,
                 { headers: wwLib.wwApiRequests._getAuthHeader() }
             );
@@ -102,9 +102,8 @@ export default {
     },
     async updateUserPassword(user, password) {
         try {
-            const websiteId = wwLib.wwWebsiteData.getInfo().id;
             await axios.patch(
-                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users/${user.id}/password`,
+                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users/${user.id}/password`,
                 { password },
                 { headers: wwLib.wwApiRequests._getAuthHeader() }
             );
@@ -115,10 +114,9 @@ export default {
     },
     async updateUserRoles(user, roles) {
         try {
-            const websiteId = wwLib.wwWebsiteData.getInfo().id;
-            await axios.patch(
-                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users/${user.id}/roles`,
-                roles,
+            await axios.put(
+                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users/${user.id}/roles`,
+                { roles },
                 { headers: wwLib.wwApiRequests._getAuthHeader() }
             );
         } catch (err) {
@@ -128,9 +126,8 @@ export default {
     },
     async blockUser(user) {
         try {
-            const websiteId = wwLib.wwWebsiteData.getInfo().id;
             await axios.delete(
-                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users/${user.id}/block`,
+                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users/${user.id}/block`,
                 { headers: wwLib.wwApiRequests._getAuthHeader() }
             );
         } catch (err) {
@@ -140,9 +137,8 @@ export default {
     },
     async unblockUser(user) {
         try {
-            const websiteId = wwLib.wwWebsiteData.getInfo().id;
             await axios.delete(
-                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users/${user.id}/unblock`,
+                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users/${user.id}/unblock`,
                 { headers: wwLib.wwApiRequests._getAuthHeader() }
             );
         } catch (err) {
@@ -152,9 +148,8 @@ export default {
     },
     async deleteUser(user) {
         try {
-            const websiteId = wwLib.wwWebsiteData.getInfo().id;
             await axios.delete(
-                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/users/${user.id}`,
+                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users/${user.id}`,
                 { headers: wwLib.wwApiRequests._getAuthHeader() }
             );
         } catch (err) {
@@ -163,17 +158,16 @@ export default {
         }
     },
     async getRoles() {
-        const websiteId = wwLib.wwWebsiteData.getInfo().id;
-        const { data } = await axios.get(`${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/roles`, {
-            headers: wwLib.wwApiRequests._getAuthHeader(),
-        });
+        const { data } = await axios.get(
+            `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/roles`,
+            { headers: wwLib.wwApiRequests._getAuthHeader() }
+        );
 
         return data;
     },
     async createRole(name) {
-        const websiteId = wwLib.wwWebsiteData.getInfo().id;
         const { data } = await axios.post(
-            `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/roles`,
+            `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/roles`,
             { name },
             { headers: wwLib.wwApiRequests._getAuthHeader() }
         );
@@ -181,9 +175,8 @@ export default {
         return data;
     },
     async updateRole(roleId, name) {
-        const websiteId = wwLib.wwWebsiteData.getInfo().id;
         const { data } = await axios.patch(
-            `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/roles/${roleId}`,
+            `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/roles/${roleId}`,
             { name },
             { headers: wwLib.wwApiRequests._getAuthHeader() }
         );
@@ -191,10 +184,10 @@ export default {
         return data;
     },
     async deleteRole(roleId) {
-        const websiteId = wwLib.wwWebsiteData.getInfo().id;
-        await axios.delete(`${wwLib.wwApiRequests._getPluginsUrl()}/designs/${websiteId}/ww-auth/roles/${roleId}`, {
-            headers: wwLib.wwApiRequests._getAuthHeader(),
-        });
+        await axios.delete(
+            `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/roles/${roleId}`,
+            { headers: wwLib.wwApiRequests._getAuthHeader() }
+        );
     },
     /* wwEditor:end */
     /*=============================================m_ÔÔ_m=============================================\
@@ -227,6 +220,12 @@ export default {
                 ),
                 id: awsUser.Username,
                 sub: undefined,
+                roles: await axios.get(
+                    `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users/${
+                        awsUser.Username
+                    }/roles`,
+                    { withCredentials: true }
+                ),
             };
 
             wwLib.wwVariable.updateValue(`${this.id}-user`, user);
