@@ -213,6 +213,13 @@ export default {
             const awsUser = await new Promise((resolve, reject) =>
                 this.cognitoUser.getUserData((err, data) => (err ? reject(err) : resolve(data)))
             );
+            const { data: roles } = await axios.get(
+                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users/${
+                    awsUser.Username
+                }/roles`,
+                { withCredentials: true }
+            );
+
             const user = {
                 ...awsUser.UserAttributes.reduce(
                     (obj, attribute) => ({ ...obj, [attribute.Name]: attribute.Value }),
@@ -220,12 +227,7 @@ export default {
                 ),
                 id: awsUser.Username,
                 sub: undefined,
-                roles: await axios.get(
-                    `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users/${
-                        awsUser.Username
-                    }/roles`,
-                    { withCredentials: true }
-                ),
+                roles,
             };
 
             wwLib.wwVariable.updateValue(`${this.id}-user`, user);
