@@ -1,12 +1,14 @@
 <template>
-    <div class="auth0-settings-summary">
-        <wwEditorFormRow label="Domain">
-            <div class="auth0-settings-summary__elem">
-                <div><wwEditorIcon large name="link" class="auth0-settings-summary__icon" /></div>
-                <span class="auth0-settings-summary__value caption-m">{{ settings.publicData.domain }}</span>
-            </div>
-        </wwEditorFormRow>
-    </div>
+    <wwEditorFormRow label="Invitation email">
+        <div class="weweb-auth-settings-summary__invitation ww-typo-sub-text mb-2">
+            {{ emailInvitationSubject }}
+        </div>
+    </wwEditorFormRow>
+    <wwEditorFormRow label="Verification code email">
+        <div class="weweb-auth-settings-summary__invitation ww-typo-sub-text mb-2">
+            {{ emailVerificationSubject }}
+        </div>
+    </wwEditorFormRow>
 </template>
 
 <script>
@@ -14,24 +16,25 @@ export default {
     props: {
         settings: { type: Object, required: true },
     },
+    emits: ['update:settings'],
+    computed: {
+        emailInvitationSubject() {
+            return this.settings.publicData.invitationEmail.EmailSubject;
+        },
+        emailVerificationSubject() {
+            return this.settings.publicData.verificationEmail.EmailSubject;
+        },
+    },
 };
 </script>
 
 <style lang="scss" scoped>
-.auth0-settings-summary {
-    &__elem {
-        display: flex;
-        align-items: center;
-        &:not(:last-child) {
-            margin-bottom: var(--ww-spacing-02);
-        }
-    }
-    &__icon {
-        margin-right: var(--ww-spacing-02);
-    }
-    &__value {
-        overflow: hidden;
-        text-overflow: ellipsis;
+.weweb-auth-settings-summary {
+    &__invitation {
+        padding: var(--ww-spacing-01) var(--ww-spacing-02);
+        border: 1px solid var(--ww-color-theme-dark-100);
+        background-color: var(--ww-color-theme-dark-50);
+        border-radius: var(--ww-border-radius-02);
     }
 }
 </style>
