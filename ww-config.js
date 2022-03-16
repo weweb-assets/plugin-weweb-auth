@@ -6,6 +6,9 @@ export default {
                 icon: 'advanced',
                 edit: () => import('./src/components/Configuration/SettingsEdit.vue'),
                 summary: () => import('./src/components/Configuration/SettingsSummary.vue'),
+                getIsValid() {
+                    return true;
+                },
             },
             {
                 label: 'Define redirections (URLs)',
