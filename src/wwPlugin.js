@@ -1,4 +1,4 @@
-import { CognitoUserPool, CognitoUser, AuthenticationDetails, CookieStorage } from 'amazon-cognito-identity-js';
+import { CognitoUserPool, CognitoUser, AuthenticationDetails, CookieStorage, config } from 'amazon-cognito-identity-js';
 /* wwEditor:start */
 import './components/Configuration/SettingsEdit.vue';
 import './components/Configuration/SettingsSummary.vue';
@@ -211,11 +211,21 @@ export default {
         window.vm.config.globalProperties.$cookie.removeCookie(ACCESS_COOKIE_NAME);
         window.vm.config.globalProperties.$cookie.removeCookie(REFRESH_COOKIE_NAME);
     },
+    async checkSession() {
+        await new Promise((resolve, reject) =>
+            this.cognitoUser.getSession((err, data) => (err ? reject(err) : resolve(data)))
+        );
+        if (config.credentials.needsRefresh()) {
+            console.log('needsRefresh');
+            const session = await new Promise((resolve, reject) =>
+                config.credentials.refreshSession((err, session) => (err ? reject(err) : resolve(session)))
+            );
+            console.log(session);
+        }
+    },
     async fetchUser() {
         try {
-            await new Promise((resolve, reject) =>
-                this.cognitoUser.getSession((err, data) => (err ? reject(err) : resolve(data)))
-            );
+            await this.checkSession();
             const awsUser = await new Promise((resolve, reject) =>
                 this.cognitoUser.getUserData((err, data) => (err ? reject(err) : resolve(data)))
             );
@@ -225,7 +235,7 @@ export default {
                 }/roles`,
                 {
                     headers: {
-                        ACCESS_COOKIE_NAME: window.vm.config.globalProperties.$cookie.getCookie(ACCESS_COOKIE_NAME),
+                        [ACCESS_COOKIE_NAME]: window.vm.config.globalProperties.$cookie.getCookie(ACCESS_COOKIE_NAME),
                     },
                 }
             );
@@ -286,6 +296,7 @@ export default {
     },
     async updateUserProfile(email, name, attributes) {
         try {
+            await this.checkSession();
             await new Promise((resolve, reject) =>
                 this.cognitoUser.updateAttributes(
                     [
@@ -304,6 +315,7 @@ export default {
     },
     async changePassword(oldPassword, newPassword) {
         try {
+            await this.checkSession();
             await new Promise((resolve, reject) =>
                 this.cognitoUser.changePassword(oldPassword, newPassword, (err, data) =>
                     err ? reject(err) : resolve(data)
