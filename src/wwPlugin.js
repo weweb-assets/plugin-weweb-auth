@@ -224,6 +224,7 @@ export default {
                     awsUser.Username
                 }/roles`,
                 {
+                    withCredentials: true,
                     headers: {
                         Cookie: `${ACCESS_COOKIE_NAME}=${window.vm.config.globalProperties.$cookie.setCookie(
                             ACCESS_COOKIE_NAME
