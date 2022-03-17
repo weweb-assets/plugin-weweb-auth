@@ -252,13 +252,15 @@ export default {
                 Storage: this.cognitoStorage,
             });
 
-            const { accessToken } = await new Promise((resolve, reject) =>
+            const data = await new Promise((resolve, reject) =>
                 this.cognitoUser.authenticateUser(new AuthenticationDetails({ Username: email, Password: password }), {
-                    onSuccess: data => resolve({ accessToken: data.getAccessToken().getJwtToken() }),
+                    onSuccess: data => resolve(data),
                     onFailure: err => reject(err),
                 })
             );
-            this.storeToken(accessToken);
+            const accessToken = data.accessToken.jwtToken;
+            const refreshToken = data.refreshToken.token;
+            this.storeToken(accessToken, refreshToken);
             return await this.fetchUser();
         } catch (err) {
             this.logout();
