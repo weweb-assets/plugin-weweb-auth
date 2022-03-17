@@ -21,7 +21,6 @@ export default {
     cognitoUser: null,
     cognitoStorage: null,
     async onLoad() {
-        new CognitoUser().refreshSession;
         this.websiteId = wwLib.wwWebsiteData.getInfo().id;
         this.cognitoStorage = new CookieStorage({ domain: window.location.hostname });
         this.cognitoUserPool = new CognitoUserPool({
@@ -205,7 +204,6 @@ export default {
             const awsUser = await new Promise((resolve, reject) =>
                 this.cognitoUser.getUserData((err, data) => (err ? reject(err) : resolve(data)))
             );
-
             const { data: roles } = await axios.get(
                 `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users/${
                     awsUser.Username
