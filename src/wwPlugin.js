@@ -1,4 +1,4 @@
-import { CognitoUserPool, CognitoUser, AuthenticationDetails, CookieStorage, config } from 'amazon-cognito-identity-js';
+import { CognitoUserPool, CognitoUser, AuthenticationDetails, CookieStorage } from 'amazon-cognito-identity-js';
 /* wwEditor:start */
 import './components/Configuration/SettingsEdit.vue';
 import './components/Configuration/SettingsSummary.vue';
@@ -215,13 +215,6 @@ export default {
         await new Promise((resolve, reject) =>
             this.cognitoUser.getSession((err, data) => (err ? reject(err) : resolve(data)))
         );
-        if (config.credentials.needsRefresh()) {
-            console.log('needsRefresh');
-            const session = await new Promise((resolve, reject) =>
-                config.credentials.refreshSession((err, session) => (err ? reject(err) : resolve(session)))
-            );
-            console.log(session);
-        }
     },
     async fetchUser() {
         try {
