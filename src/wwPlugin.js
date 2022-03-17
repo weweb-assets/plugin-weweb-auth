@@ -226,7 +226,6 @@ export default {
                 {
                     headers: {
                         ACCESS_COOKIE_NAME: window.vm.config.globalProperties.$cookie.getCookie(ACCESS_COOKIE_NAME),
-                        REFRESH_COOKIE_NAME: window.vm.config.globalProperties.$cookie.getCookie(REFRESH_COOKIE_NAME),
                     },
                 }
             );
