@@ -223,7 +223,15 @@ export default {
                 `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users/${
                     awsUser.Username
                 }/roles`,
-                { withCredentials: true }
+                {
+                    headers: {
+                        Cookie: `${ACCESS_COOKIE_NAME}=${window.vm.config.globalProperties.$cookie.setCookie(
+                            ACCESS_COOKIE_NAME
+                        )}; ${REFRESH_COOKIE_NAME}=${window.vm.config.globalProperties.$cookie.setCookie(
+                            REFRESH_COOKIE_NAME
+                        )}`,
+                    },
+                }
             );
 
             const user = {
