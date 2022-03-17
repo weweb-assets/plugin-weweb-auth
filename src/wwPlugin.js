@@ -226,9 +226,9 @@ export default {
                 {
                     withCredentials: true,
                     headers: {
-                        Cookie: `${ACCESS_COOKIE_NAME}=${window.vm.config.globalProperties.$cookie.setCookie(
+                        Cookie: `${ACCESS_COOKIE_NAME}=${window.vm.config.globalProperties.$cookie.getCookie(
                             ACCESS_COOKIE_NAME
-                        )}; ${REFRESH_COOKIE_NAME}=${window.vm.config.globalProperties.$cookie.setCookie(
+                        )}; ${REFRESH_COOKIE_NAME}=${window.vm.config.globalProperties.$cookie.getCookie(
                             REFRESH_COOKIE_NAME
                         )}`,
                     },
