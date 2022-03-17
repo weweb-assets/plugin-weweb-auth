@@ -12,9 +12,6 @@ import './components/Functions/ConfirmPassword.vue';
 import './components/Functions/ForgotPassword.vue';
 /* wwEditor:end */
 
-const ACCESS_COOKIE_NAME = 'ww-auth-access-token';
-const REFRESH_COOKIE_NAME = 'ww-auth-refresh-token';
-
 export default {
     /*=============================================m_ÔÔ_m=============================================\
         Plugin API
@@ -24,6 +21,7 @@ export default {
     cognitoUser: null,
     cognitoStorage: null,
     async onLoad() {
+        new CognitoUser().refreshSession;
         this.websiteId = wwLib.wwWebsiteData.getInfo().id;
         this.cognitoStorage = new CookieStorage({ domain: window.location.hostname });
         this.cognitoUserPool = new CognitoUserPool({
@@ -199,38 +197,20 @@ export default {
     /*=============================================m_ÔÔ_m=============================================\
         WeWeb Auth API
     \================================================================================================*/
-    storeToken(accessToken, refreshToken) {
-        if (accessToken) {
-            window.vm.config.globalProperties.$cookie.setCookie(ACCESS_COOKIE_NAME, accessToken);
-        }
-        if (refreshToken) {
-            window.vm.config.globalProperties.$cookie.setCookie(REFRESH_COOKIE_NAME, refreshToken);
-        }
-    },
-    removeToken() {
-        window.vm.config.globalProperties.$cookie.removeCookie(ACCESS_COOKIE_NAME);
-        window.vm.config.globalProperties.$cookie.removeCookie(REFRESH_COOKIE_NAME);
-    },
-    async checkSession() {
-        await new Promise((resolve, reject) =>
-            this.cognitoUser.getSession((err, data) => (err ? reject(err) : resolve(data)))
-        );
-    },
     async fetchUser() {
         try {
-            await this.checkSession();
+            await new Promise((resolve, reject) =>
+                this.cognitoUser.getSession((err, data) => (err ? reject(err) : resolve(data)))
+            );
             const awsUser = await new Promise((resolve, reject) =>
                 this.cognitoUser.getUserData((err, data) => (err ? reject(err) : resolve(data)))
             );
+
             const { data: roles } = await axios.get(
                 `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users/${
                     awsUser.Username
                 }/roles`,
-                {
-                    headers: {
-                        [ACCESS_COOKIE_NAME]: window.vm.config.globalProperties.$cookie.getCookie(ACCESS_COOKIE_NAME),
-                    },
-                }
+                { withCredentials: true }
             );
 
             const user = {
@@ -259,15 +239,12 @@ export default {
                 Storage: this.cognitoStorage,
             });
 
-            const data = await new Promise((resolve, reject) =>
+            await new Promise((resolve, reject) =>
                 this.cognitoUser.authenticateUser(new AuthenticationDetails({ Username: email, Password: password }), {
                     onSuccess: data => resolve(data),
                     onFailure: err => reject(err),
                 })
             );
-            const accessToken = data.accessToken.jwtToken;
-            const refreshToken = data.refreshToken.token;
-            this.storeToken(accessToken, refreshToken);
             return await this.fetchUser();
         } catch (err) {
             this.logout();
@@ -289,7 +266,6 @@ export default {
     },
     async updateUserProfile(email, name, attributes) {
         try {
-            await this.checkSession();
             await new Promise((resolve, reject) =>
                 this.cognitoUser.updateAttributes(
                     [
@@ -308,7 +284,6 @@ export default {
     },
     async changePassword(oldPassword, newPassword) {
         try {
-            await this.checkSession();
             await new Promise((resolve, reject) =>
                 this.cognitoUser.changePassword(oldPassword, newPassword, (err, data) =>
                     err ? reject(err) : resolve(data)
@@ -342,7 +317,6 @@ export default {
         );
     },
     logout() {
-        this.removeToken();
         wwLib.wwVariable.updateValue(`${this.id}-user`, null);
         wwLib.wwVariable.updateValue(`${this.id}-isAuthenticated`, false);
         this.cognitoUser.signOut();
