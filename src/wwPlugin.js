@@ -20,12 +20,12 @@ export default {
     cognitoUserPool: null,
     cognitoUser: null,
     cognitoStorage: null,
-    async onLoad() {
+    async onLoad(settings) {
         this.websiteId = wwLib.wwWebsiteData.getInfo().id;
         this.cognitoStorage = new CookieStorage({ domain: window.location.hostname });
         this.cognitoUserPool = new CognitoUserPool({
-            ClientId: this.settings.publicData.clientId,
-            UserPoolId: this.settings.publicData.userPoolId,
+            ClientId: settings.publicData.clientId,
+            UserPoolId: settings.publicData.userPoolId,
             Storage: this.cognitoStorage,
         });
         this.cognitoUser = this.cognitoUserPool.getCurrentUser();
