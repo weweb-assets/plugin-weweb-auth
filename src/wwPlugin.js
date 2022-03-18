@@ -198,8 +198,8 @@ export default {
     \================================================================================================*/
     async fetchUser() {
         try {
-            await new Promise((resolve, reject) =>
-                this.cognitoUser.getSession((err, data) => (err ? reject(err) : resolve(data)))
+            const accessToken = await new Promise((resolve, reject) =>
+                this.cognitoUser.getSession((err, data) => (err ? reject(err) : resolve(data.accessToken.jwtToken)))
             );
             const awsUser = await new Promise((resolve, reject) =>
                 this.cognitoUser.getUserData((err, data) => (err ? reject(err) : resolve(data)))
@@ -208,7 +208,7 @@ export default {
                 `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users/${
                     awsUser.Username
                 }/roles`,
-                { withCredentials: true }
+                { headers: { 'ww-auth-access-token': accessToken } }
             );
 
             const user = {
