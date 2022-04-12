@@ -37,6 +37,7 @@
                 :model-value="item.value"
                 type="query"
                 small
+                bindable
                 placeholder="Enter a value"
                 @update:model-value="setItem({ ...item, value: $event })"
             />
