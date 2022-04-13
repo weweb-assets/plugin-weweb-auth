@@ -21,7 +21,7 @@ export default {
                 },
             },
         ],
-        // designSystemId: 'ec2eebfe-499b-43c4-b260-80ee5a4d9504',
+        designSystemId: '053d6253-48d1-4298-9ddc-d6a542fa400a',
     },
     variables: [
         { name: 'user', value: 'user', type: 'object', defaultValue: null },
