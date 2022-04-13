@@ -231,6 +231,7 @@ export default {
     },
     async login(email, password) {
         try {
+            if (this.cognitoUser) this.logout();
             this.cognitoUser = new CognitoUser({
                 Username: email,
                 Pool: this.cognitoUserPool,
