@@ -49,7 +49,7 @@
 export default {
     props: {
         plugin: { type: Object, required: true },
-        args: { type: Object, default: () => ({ email: null, password: null, attributes: [] }) },
+        args: { type: Object, required: true },
     },
     emits: ['update:args'],
     computed: {
@@ -60,7 +60,7 @@ export default {
             return this.args.name;
         },
         attributes() {
-            return this.args.attributes;
+            return this.args.attributes || [];
         },
         userAttributesOptions() {
             return this.plugin.userAttributes.map(attribute => ({
