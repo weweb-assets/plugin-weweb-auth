@@ -14,17 +14,17 @@
 export default {
     props: {
         plugin: { type: Object, required: true },
-        args: { type: Array, default: () => [null] },
+        args: { type: Object, default: () => ({ email: null }) },
     },
     emits: ['update:args'],
     computed: {
         email() {
-            return this.args[0];
+            return this.args.email;
         },
     },
     methods: {
         setEmail(email) {
-            this.$emit('update:args', [email, this.password]);
+            this.$emit('update:args', { ...this.args, email });
         },
     },
 };

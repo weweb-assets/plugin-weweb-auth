@@ -23,23 +23,23 @@
 export default {
     props: {
         plugin: { type: Object, required: true },
-        args: { type: Array, default: () => [null, null] },
+        args: { type: Object, default: () => ({ oldPassword: null, newPassword: null }) },
     },
     emits: ['update:args'],
     computed: {
         oldPassword() {
-            return this.args[0];
+            return this.args.oldPassword;
         },
         newPassword() {
-            return this.args[1];
+            return this.args.newPassword;
         },
     },
     methods: {
         setOldPassword(oldPassword) {
-            this.$emit('update:args', [oldPassword, this.newPassword]);
+            this.$emit('update:args', { ...this.args, oldPassword });
         },
         setNewPassword(newPassword) {
-            this.$emit('update:args', [this.oldPassword, newPassword]);
+            this.$emit('update:args', { ...this.args, newPassword });
         },
     },
 };

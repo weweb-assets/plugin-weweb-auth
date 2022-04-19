@@ -27,15 +27,10 @@ export default {
         { name: 'user', value: 'user', type: 'object', defaultValue: null },
         { name: 'isAuthenticated', value: 'isAuthenticated', type: 'boolean', defaultValue: false },
     ],
-    functions: [
+    actions: [
         {
             name: 'Sign Up',
             code: 'signUp',
-            parameters: [
-                { name: 'Email', type: 'string' },
-                { name: 'Password', type: 'string' },
-                { name: 'Name', type: 'string' },
-            ],
             isAsync: true,
             /* wwEditor:start */
             edit: () => import('./src/components/Functions/SignUp.vue'),
@@ -47,10 +42,6 @@ export default {
         {
             name: 'Login',
             code: 'login',
-            parameters: [
-                { name: 'Email', type: 'string' },
-                { name: 'Password', type: 'string' },
-            ],
             isAsync: true,
             /* wwEditor:start */
             edit: () => import('./src/components/Functions/Login.vue'),
@@ -62,11 +53,6 @@ export default {
         {
             name: 'Update User Profile',
             code: 'updateUserProfile',
-            parameters: [
-                { name: 'Email', type: 'string' },
-                { name: 'Name', type: 'string' },
-                { name: 'Custom attributes', type: 'array' },
-            ],
             isAsync: true,
             /* wwEditor:start */
             edit: () => import('./src/components/Functions/UpdateUserProfile.vue'),
@@ -78,10 +64,6 @@ export default {
         {
             name: 'Change Password',
             code: 'changePassword',
-            parameters: [
-                { name: 'Old Password', type: 'string' },
-                { name: 'New Password', type: 'string' },
-            ],
             isAsync: true,
             /* wwEditor:start */
             edit: () => import('./src/components/Functions/ChangePassword.vue'),
@@ -93,7 +75,6 @@ export default {
         {
             name: 'Forgot Password',
             code: 'forgotPassword',
-            parameters: [{ name: 'Email', type: 'string' }],
             isAsync: true,
             /* wwEditor:start */
             edit: () => import('./src/components/Functions/ForgotPassword.vue'),
@@ -105,10 +86,6 @@ export default {
         {
             name: 'Confirm Password',
             code: 'confirmPassword',
-            parameters: [
-                { name: 'Verification Code', type: 'string' },
-                { name: 'New Password', type: 'string' },
-            ],
             isAsync: true,
             /* wwEditor:start */
             edit: () => import('./src/components/Functions/ConfirmPassword.vue'),
@@ -120,7 +97,6 @@ export default {
         {
             name: 'Logout',
             code: 'logout',
-            parameters: [],
         },
     ],
 };

@@ -229,7 +229,7 @@ export default {
             throw err;
         }
     },
-    async login(email, password) {
+    async login({ email, password }) {
         try {
             if (this.cognitoUser) this.logout();
             this.cognitoUser = new CognitoUser({
@@ -250,20 +250,20 @@ export default {
             throw err;
         }
     },
-    async signUp(email, password, name) {
+    async signUp({ email, password, name }) {
         try {
             await new Promise((resolve, reject) =>
                 this.cognitoUserPool.signUp(email, password, [{ Name: 'name', Value: name }], null, (err, data) =>
                     err ? reject(err) : resolve(data)
                 )
             );
-            return await this.login(email, password);
+            return await this.login({ email, password });
         } catch (err) {
             this.logout();
             throw err;
         }
     },
-    async updateUserProfile(email, name, attributes) {
+    async updateUserProfile({ email, name, attributes }) {
         try {
             await new Promise((resolve, reject) =>
                 this.cognitoUser.updateAttributes(
@@ -281,7 +281,7 @@ export default {
             throw err;
         }
     },
-    async changePassword(oldPassword, newPassword) {
+    async changePassword({ oldPassword, newPassword }) {
         try {
             await new Promise((resolve, reject) =>
                 this.cognitoUser.changePassword(oldPassword, newPassword, (err, data) =>
@@ -293,7 +293,7 @@ export default {
             throw err;
         }
     },
-    async forgotPassword(email) {
+    async forgotPassword({ email }) {
         this.cognitoUser = new CognitoUser({
             Username: email,
             Pool: this.cognitoUserPool,
@@ -307,7 +307,7 @@ export default {
             })
         );
     },
-    async confirmPassword(verificationCode, newPassword) {
+    async confirmPassword({ verificationCode, newPassword }) {
         await new Promise((resolve, reject) =>
             this.cognitoUser.confirmPassword(verificationCode, newPassword, {
                 onSuccess: () => resolve(),

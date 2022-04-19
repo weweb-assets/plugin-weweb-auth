@@ -49,18 +49,18 @@
 export default {
     props: {
         plugin: { type: Object, required: true },
-        args: { type: Array, default: () => [null, null, []] },
+        args: { type: Object, default: () => ({ email: null, password: null, attributes: [] }) },
     },
     emits: ['update:args'],
     computed: {
         email() {
-            return this.args[0];
+            return this.args.email;
         },
         name() {
-            return this.args[1];
+            return this.args.name;
         },
         attributes() {
-            return this.args[2];
+            return this.args.attributes;
         },
         userAttributesOptions() {
             return this.plugin.userAttributes.map(attribute => ({
@@ -71,13 +71,13 @@ export default {
     },
     methods: {
         setEmail(email) {
-            this.$emit('update:args', [email, this.name, this.attributes]);
+            this.$emit('update:args', { ...this.args, email });
         },
         setName(name) {
-            this.$emit('update:args', [this.email, name, this.attributes]);
+            this.$emit('update:args', { ...this.args, name });
         },
         setAttributes(attributes) {
-            this.$emit('update:args', [this.email, this.name, attributes]);
+            this.$emit('update:args', { ...this.args, attributes });
         },
     },
 };
