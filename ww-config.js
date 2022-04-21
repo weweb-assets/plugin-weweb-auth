@@ -27,19 +27,14 @@ export default {
         { name: 'user', value: 'user', type: 'object', defaultValue: null },
         { name: 'isAuthenticated', value: 'isAuthenticated', type: 'boolean', defaultValue: false },
     ],
-    functions: [
+    actions: [
         {
             name: 'Sign Up',
             code: 'signUp',
-            parameters: [
-                { name: 'Email', type: 'string' },
-                { name: 'Password', type: 'string' },
-                { name: 'Name', type: 'string' },
-            ],
             isAsync: true,
             /* wwEditor:start */
             edit: () => import('./src/components/Functions/SignUp.vue'),
-            getIsValid([email, password]) {
+            getIsValid({ email, password }) {
                 return !!email && !!password;
             },
             /* wwEditor:end */
@@ -47,14 +42,10 @@ export default {
         {
             name: 'Login',
             code: 'login',
-            parameters: [
-                { name: 'Email', type: 'string' },
-                { name: 'Password', type: 'string' },
-            ],
             isAsync: true,
             /* wwEditor:start */
             edit: () => import('./src/components/Functions/Login.vue'),
-            getIsValid([email, password]) {
+            getIsValid({ email, password }) {
                 return !!email && !!password;
             },
             /* wwEditor:end */
@@ -62,15 +53,10 @@ export default {
         {
             name: 'Update User Profile',
             code: 'updateUserProfile',
-            parameters: [
-                { name: 'Email', type: 'string' },
-                { name: 'Name', type: 'string' },
-                { name: 'Custom attributes', type: 'array' },
-            ],
             isAsync: true,
             /* wwEditor:start */
             edit: () => import('./src/components/Functions/UpdateUserProfile.vue'),
-            getIsValid([email]) {
+            getIsValid({ email }) {
                 return !!email;
             },
             /* wwEditor:end */
@@ -78,14 +64,10 @@ export default {
         {
             name: 'Change Password',
             code: 'changePassword',
-            parameters: [
-                { name: 'Old Password', type: 'string' },
-                { name: 'New Password', type: 'string' },
-            ],
             isAsync: true,
             /* wwEditor:start */
             edit: () => import('./src/components/Functions/ChangePassword.vue'),
-            getIsValid([oldPassword, newPassword]) {
+            getIsValid({ oldPassword, newPassword }) {
                 return !!oldPassword && !!newPassword;
             },
             /* wwEditor:end */
@@ -93,11 +75,10 @@ export default {
         {
             name: 'Forgot Password',
             code: 'forgotPassword',
-            parameters: [{ name: 'Email', type: 'string' }],
             isAsync: true,
             /* wwEditor:start */
             edit: () => import('./src/components/Functions/ForgotPassword.vue'),
-            getIsValid([email]) {
+            getIsValid({ email }) {
                 return email;
             },
             /* wwEditor:end */
@@ -105,14 +86,10 @@ export default {
         {
             name: 'Confirm Password',
             code: 'confirmPassword',
-            parameters: [
-                { name: 'Verification Code', type: 'string' },
-                { name: 'New Password', type: 'string' },
-            ],
             isAsync: true,
             /* wwEditor:start */
             edit: () => import('./src/components/Functions/ConfirmPassword.vue'),
-            getIsValid([verificationCode, newPassword]) {
+            getIsValid({ verificationCode, newPassword }) {
                 return !!verificationCode && !!newPassword;
             },
             /* wwEditor:end */
@@ -120,7 +97,6 @@ export default {
         {
             name: 'Logout',
             code: 'logout',
-            parameters: [],
         },
     ],
 };

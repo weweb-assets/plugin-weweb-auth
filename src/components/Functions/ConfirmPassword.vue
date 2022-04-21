@@ -23,23 +23,23 @@
 export default {
     props: {
         plugin: { type: Object, required: true },
-        args: { type: Array, default: () => [null, null] },
+        args: { type: Object, required: true },
     },
     emits: ['update:args'],
     computed: {
         verificationCode() {
-            return this.args[0];
+            return this.args.verificationCode;
         },
         newPassword() {
-            return this.args[1];
+            return this.args.newPassword;
         },
     },
     methods: {
         setVerificationCode(verificationCode) {
-            this.$emit('update:args', [verificationCode, this.newPassword]);
+            this.$emit('update:args', { ...this.args, verificationCode });
         },
         setNewPassword(newPassword) {
-            this.$emit('update:args', [this.verificationCode, newPassword]);
+            this.$emit('update:args', { ...this.args, newPassword });
         },
     },
 };
