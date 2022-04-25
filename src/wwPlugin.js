@@ -217,7 +217,6 @@ export default {
                     {}
                 ),
                 id: awsUser.Username,
-                sub: undefined,
                 roles,
             };
 
