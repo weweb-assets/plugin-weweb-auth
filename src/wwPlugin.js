@@ -22,7 +22,10 @@ export default {
     cognitoStorage: null,
     async onLoad(settings) {
         this.websiteId = wwLib.wwWebsiteData.getInfo().id;
-        this.cognitoStorage = new CookieStorage({ domain: window.location.hostname });
+        this.cognitoStorage = new CookieStorage({
+            domain: window.location.hostname,
+            path: wwLib.manager ? `/${this.websiteId}` : '/',
+        });
         this.cognitoUserPool = new CognitoUserPool({
             ClientId: settings.publicData.clientId,
             UserPoolId: settings.publicData.userPoolId,
@@ -217,9 +220,9 @@ export default {
                     {}
                 ),
                 id: awsUser.Username,
-                sub: undefined,
                 roles,
             };
+            delete user.sub;
 
             wwLib.wwVariable.updateValue(`${this.id}-user`, user);
             wwLib.wwVariable.updateValue(`${this.id}-isAuthenticated`, true);
