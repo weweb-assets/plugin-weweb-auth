@@ -321,6 +321,6 @@ export default {
     logout() {
         wwLib.wwVariable.updateValue(`${this.id}-user`, null);
         wwLib.wwVariable.updateValue(`${this.id}-isAuthenticated`, false);
-        this.cognitoUser.signOut();
+        if (this.cognitoUser) this.cognitoUser.signOut();
     },
 };
