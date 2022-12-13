@@ -55,19 +55,17 @@ export default {
         { label: 'Phone number', key: 'phone_number' },
     ],
     async adminGetUsers() {
-        const response = await axios.get(
-            `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users`,
-            { headers: wwLib.wwApiRequests._getAuthHeader() }
+        const response = await wwAxios.get(
+            `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users`
         );
 
         return response.data;
     },
     async adminCreateUser(data, isInvitation) {
         try {
-            const { data: user } = await axios.post(
+            const { data: user } = await wwAxios.post(
                 `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users`,
-                { ...data, isInvitation },
-                { headers: wwLib.wwApiRequests._getAuthHeader() }
+                { ...data, isInvitation }
             );
             return user;
         } catch (err) {
@@ -77,10 +75,9 @@ export default {
     },
     async adminUpdateUser(user, data) {
         try {
-            const { data: userUpdated } = await axios.patch(
+            const { data: userUpdated } = await wwAxios.patch(
                 `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users/${user.id}`,
-                data,
-                { headers: wwLib.wwApiRequests._getAuthHeader() }
+                data
             );
             return userUpdated;
         } catch (err) {
@@ -90,10 +87,9 @@ export default {
     },
     async adminUpdateUserPassword(user, password) {
         try {
-            await axios.patch(
+            await wwAxios.patch(
                 `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users/${user.id}/password`,
-                { password },
-                { headers: wwLib.wwApiRequests._getAuthHeader() }
+                { password }
             );
         } catch (err) {
             if (err.response && err.response.data.message) throw new Error(err.response.data.message);
@@ -102,10 +98,9 @@ export default {
     },
     async adminUpdateUserRoles(user, roles) {
         try {
-            await axios.put(
+            await wwAxios.put(
                 `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users/${user.id}/roles`,
-                { roles },
-                { headers: wwLib.wwApiRequests._getAuthHeader() }
+                { roles }
             );
         } catch (err) {
             if (err.response && err.response.data.message) throw new Error(err.response.data.message);
@@ -114,9 +109,8 @@ export default {
     },
     async adminBlockUser(user) {
         try {
-            await axios.delete(
-                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users/${user.id}/block`,
-                { headers: wwLib.wwApiRequests._getAuthHeader() }
+            await wwAxios.delete(
+                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users/${user.id}/block`
             );
         } catch (err) {
             if (err.response && err.response.data.message) throw new Error(err.response.data.message);
@@ -125,9 +119,8 @@ export default {
     },
     async adminUnblockUser(user) {
         try {
-            await axios.delete(
-                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users/${user.id}/unblock`,
-                { headers: wwLib.wwApiRequests._getAuthHeader() }
+            await wwAxios.delete(
+                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users/${user.id}/unblock`
             );
         } catch (err) {
             if (err.response && err.response.data.message) throw new Error(err.response.data.message);
@@ -136,9 +129,8 @@ export default {
     },
     async adminDeleteUser(user) {
         try {
-            await axios.delete(
-                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users/${user.id}`,
-                { headers: wwLib.wwApiRequests._getAuthHeader() }
+            await wwAxios.delete(
+                `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/users/${user.id}`
             );
         } catch (err) {
             if (err.response && err.response.data.message) throw new Error(err.response.data.message);
@@ -164,35 +156,31 @@ export default {
     },
     /* Roles */
     async adminGetRoles() {
-        const { data } = await axios.get(
-            `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/roles`,
-            { headers: wwLib.wwApiRequests._getAuthHeader() }
+        const { data } = await wwAxios.get(
+            `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/roles`
         );
 
         return data;
     },
     async adminCreateRole(name) {
-        const { data } = await axios.post(
+        const { data } = await wwAxios.post(
             `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/roles`,
-            { name },
-            { headers: wwLib.wwApiRequests._getAuthHeader() }
+            { name }
         );
 
         return data;
     },
     async adminUpdateRole(roleId, name) {
-        const { data } = await axios.patch(
+        const { data } = await wwAxios.patch(
             `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/roles/${roleId}`,
-            { name },
-            { headers: wwLib.wwApiRequests._getAuthHeader() }
+            { name }
         );
 
         return data;
     },
     async adminDeleteRole(roleId) {
-        await axios.delete(
-            `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/roles/${roleId}`,
-            { headers: wwLib.wwApiRequests._getAuthHeader() }
+        await wwAxios.delete(
+            `${wwLib.wwApiRequests._getPluginsUrl()}/designs/${this.websiteId}/ww-auth/roles/${roleId}`
         );
     },
     /* wwEditor:end */
