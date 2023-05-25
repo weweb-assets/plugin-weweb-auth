@@ -152,12 +152,7 @@ export default {
     },
     adminExportUsers(users) {
         const titles = [...new Set(users.map(user => Object.keys(user)).flat())];
-        return [titles, ...users.map(user => titles.map(title => { 
-            if(typeof user[title] === 'string'){
-                return user[title];
-            }
-            return `${user[title]}`;            
-        }))];
+        return [titles, ...users.map(user => titles.map(title => `${user[title]}`))];
     },
     /* Roles */
     async adminGetRoles() {
