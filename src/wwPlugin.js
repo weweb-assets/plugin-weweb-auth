@@ -260,6 +260,7 @@ export default {
         }
     },
     async updateUserProfile({ email, name, attributes }) {
+        if (!email) throw new Error('Failed to update user. Email cannot be empty.')
         try {
             await new Promise((resolve, reject) =>
                 this.cognitoUser.updateAttributes(
