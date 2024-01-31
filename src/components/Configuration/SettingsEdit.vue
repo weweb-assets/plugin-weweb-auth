@@ -48,14 +48,14 @@ export default {
     },
     methods: {
         async contactUs() {
-            if (!window.$crisp) {
+            if (!window.userflow) {
                 return await wwLib.wwModals.open({
                     title: { en: 'Uh oh 😢' },
-                    text: "Please disable your adblocker to display the live chat. We won't share your data with third-party ad services.",
-                    buttons: [{ text: 'I understand', color: '-primary -green', value: true, enter: true }],
+                    text: "Please disable your adblocker. We won't share your data with third-party ad services.",
+                    buttons: [{ text: 'I understand', color: '-primary', value: true, enter: true }],
                 });
             }
-            window.$crisp.push(['do', 'chat:open']);
+            window.userflow.start('85312edc-c9f8-4524-bb40-51c389688025')
         },
     },
 };
