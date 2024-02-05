@@ -7,7 +7,7 @@
         <div class="weweb-auth-settings-edit__invitation ww-typo-caption mb-1" v-html="emailInvitationMessage"></div>
         <div class="ww-typo-link mb-2 weweb-auth-settings-edit__description">
             If you want to change the invitation email template
-            <a class="ww-editor-link" href="https://support.weweb.io/" target="_blank">contact us</a>.
+            <a class="ww-editor-link" href="https://support.weweb.io/ticket/new/" target="_blank">contact us</a>.
         </div>
     </wwEditorFormRow>
     <wwEditorFormRow label="Verification code email">
@@ -18,7 +18,7 @@
         <div class="weweb-auth-settings-edit__invitation ww-typo-caption mb-1" v-html="emailVerificationMessage"></div>
         <div class="ww-typo-link mb-2 weweb-auth-settings-edit__description">
             If you want to change the verification code email template
-            <a class="ww-editor-link" href="https://support.weweb.io/" target="_blank">contact us</a>.
+            <a class="ww-editor-link" href="https://support.weweb.io/ticket/new/" target="_blank">contact us</a>.
         </div>
     </wwEditorFormRow>
 </template>
