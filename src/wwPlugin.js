@@ -140,7 +140,7 @@ export default {
     async _adminImportUsers(users, isInvitation) {
         for (const user of users) {
             try {
-                await this.adminCreateUser(
+                await this._adminCreateUser(
                     { email: user.email, name: user.name, password: user.password, attributes: [] },
                     isInvitation
                 );
