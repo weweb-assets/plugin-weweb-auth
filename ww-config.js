@@ -16,6 +16,10 @@ export default {
         ],
         designSystemId: '053d6253-48d1-4298-9ddc-d6a542fa400a',
     },
+    variables: [
+        { name: 'user', value: 'user', type: 'object', defaultValue: null },
+        { name: 'isAuthenticated', value: 'isAuthenticated', type: 'boolean', defaultValue: false },
+    ],
     actions: [
         {
             name: 'Sign Up',
