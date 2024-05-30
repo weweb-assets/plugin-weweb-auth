@@ -37,6 +37,15 @@ export default {
             getIsValid({ email, password }) {
                 return !!email && !!password;
             },
+            copilot: {
+                description: 'Sign up a new user',
+                returns: 'null',
+                schema: `{
+                    email: __VALUE__,
+                    password: __VALUE__,
+                    name: __VALUE__
+                }`
+            }
             /* wwEditor:end */
         },
         {
@@ -48,6 +57,14 @@ export default {
             getIsValid({ email, password }) {
                 return !!email && !!password;
             },
+            copilot: {
+                description: 'Log in a user',
+                returns: 'null',
+                schema: `{
+                    email: __VALUE__,
+                    password: __VALUE__
+                }`
+            }
             /* wwEditor:end */
         },
         {
@@ -59,6 +76,22 @@ export default {
             getIsValid({ email }) {
                 return !!email;
             },
+            copilot: {
+                description: 'Update User Profile',
+                returns: 'null',
+                schema: `{
+                    email: __VALUE__,
+                    name: __VALUE__,
+                    attributes: [
+                        {
+                            key: "{{One of the following: 'picture', 'given_name', 'family_name', 'middle_name', 'nickname', 'profile', 'website', 'gender', 'birthdate', 'zoneinfo', 'locale', 'address', 'phone_number'}}",
+                            type: "string",
+                            value: __VALUE__
+                        },
+                        ...
+                    ]
+                }`
+            }
             /* wwEditor:end */
         },
         {
@@ -70,6 +103,14 @@ export default {
             getIsValid({ oldPassword, newPassword }) {
                 return !!oldPassword && !!newPassword;
             },
+            copilot: {
+                description: 'Change Password',
+                returns: 'null',
+                schema: `{
+                    newPassword: __VALUE__,
+                    oldPassword: __VALUE__
+                }`
+            }
             /* wwEditor:end */
         },
         {
@@ -81,6 +122,13 @@ export default {
             getIsValid({ email }) {
                 return email;
             },
+            copilot: {
+                description: 'Send a forgot password email',
+                returns: 'null',
+                schema: `{
+                    email: __VALUE__
+                }`
+            }
             /* wwEditor:end */
         },
         {
@@ -92,11 +140,24 @@ export default {
             getIsValid({ verificationCode, newPassword }) {
                 return !!verificationCode && !!newPassword;
             },
+            copilot: {
+                description: 'Confirm Password using verification code',
+                returns: 'null',
+                schema: `{
+                    newPassword: __VALUE__,
+                    verificationCode: __VALUE__
+                }`
+            }
             /* wwEditor:end */
         },
         {
             name: 'Logout',
             code: 'logout',
+            copilot: {
+                description: 'Logout user',
+                returns: 'null',
+                schema: `{}`
+            }
         },
     ],
 };
