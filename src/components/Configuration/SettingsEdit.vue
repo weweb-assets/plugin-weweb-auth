@@ -52,12 +52,12 @@ export default {
 <style lang="scss" scoped>
 .weweb-auth-settings-edit {
     &__description {
-        color: var(--ww-color-theme-dark-600);
+        color: var(--ww-color-content-secondary);
     }
     &__invitation {
         padding: var(--ww-spacing-01) var(--ww-spacing-02);
-        border: 1px solid var(--ww-color-bg-tertiary);
-        background-color: var(--ww-color-bg-tertiary);
+        border: 1px solid var(--ww-color-bg-secondary);
+        background-color: var(--ww-color-bg-secondary);
         border-radius: var(--ww-border-radius-02);
     }
 }
