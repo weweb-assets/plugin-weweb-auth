@@ -32,7 +32,7 @@ export default {
 .weweb-auth-settings-summary {
     &__invitation {
         padding: var(--ww-spacing-01) var(--ww-spacing-02);
-        border: 1px solid var(--ww-color-bg-secondary);
+        border: 1px solid var(--ww-color-border);
         background-color: var(--ww-color-bg-secondary);
         border-radius: var(--ww-border-radius-02);
     }
