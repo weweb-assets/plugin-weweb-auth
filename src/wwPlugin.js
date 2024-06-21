@@ -34,6 +34,9 @@ export default {
         this.cognitoUser = this.cognitoUserPool.getCurrentUser();
         if (this.cognitoUser) await this.fetchUser();
     },
+    _getUserRoles() {
+        return this.user.roles?.map(role => role.id);
+    },
     /*=============================================m_ÔÔ_m=============================================\
         Auth API
     \================================================================================================*/
