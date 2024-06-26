@@ -1,4 +1,7 @@
 export default {
+    features: {
+        auth: true
+    },
     editor: {
         settings: [
             {
@@ -8,16 +11,6 @@ export default {
                 summary: () => import('./src/components/Configuration/SettingsSummary.vue'),
                 getIsValid() {
                     return true;
-                },
-            },
-            {
-                label: 'Define redirections (URLs)',
-                icon: 'open-out',
-                edit: () => import('./src/components/Redirections/SettingsEdit.vue'),
-                summary: () => import('./src/components/Redirections/SettingsSummary.vue'),
-                getIsValid(settings) {
-                    const { afterNotSignInPageId } = settings.publicData;
-                    return !!afterNotSignInPageId;
                 },
             },
         ],
