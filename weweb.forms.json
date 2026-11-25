@@ -29,10 +29,7 @@
                 "type": "display",
                 "label": "Subject",
                 "group": "invitation",
-                "publicPath": [
-                    "invitationEmail",
-                    "EmailSubject"
-                ]
+                "publicPath": ["invitationEmail", "EmailSubject"]
             },
             {
                 "key": "invitationMessage",
@@ -40,10 +37,7 @@
                 "label": "Message",
                 "presentation": "formattedText",
                 "group": "invitation",
-                "publicPath": [
-                    "invitationEmail",
-                    "EmailMessage"
-                ],
+                "publicPath": ["invitationEmail", "EmailMessage"],
                 "replacements": [
                     {
                         "token": "{username}",
@@ -60,10 +54,7 @@
                 "type": "display",
                 "label": "Subject",
                 "group": "verification",
-                "publicPath": [
-                    "verificationEmail",
-                    "EmailSubject"
-                ]
+                "publicPath": ["verificationEmail", "EmailSubject"]
             },
             {
                 "key": "verificationMessage",
@@ -71,10 +62,7 @@
                 "label": "Message",
                 "presentation": "formattedText",
                 "group": "verification",
-                "publicPath": [
-                    "verificationEmail",
-                    "EmailMessage"
-                ],
+                "publicPath": ["verificationEmail", "EmailMessage"],
                 "replacements": [
                     {
                         "token": "{####}",
