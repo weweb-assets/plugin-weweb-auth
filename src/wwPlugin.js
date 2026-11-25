@@ -20,10 +20,14 @@ export default {
     cognitoStorage: null,
     async _onLoad(settings) {
         this.websiteId = wwLib.wwWebsiteData.getInfo().id;
-        this.cognitoStorage = new CookieStorage({
-            domain: window.location.hostname,
-            path: wwLib.manager ? `/${this.websiteId}` : '/',
-        });
+        this.cognitoStorage =
+            /* wwEditor:start */
+            wwLib.editor?.isolatedCanvas ? window.sessionStorage :
+            /* wwEditor:end */
+            new CookieStorage({
+                domain: window.location.hostname,
+                path: wwLib.manager ? `/${this.websiteId}` : '/',
+            });
         this.cognitoUserPool = new CognitoUserPool({
             ClientId: settings.publicData.clientId,
             UserPoolId: settings.publicData.userPoolId,
