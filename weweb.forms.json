@@ -8,11 +8,19 @@
         "groups": [
             {
                 "key": "invitation",
-                "label": "Invitation email"
+                "label": "Invitation email",
+                "help": {
+                    "text": "To change the invitation email template, contact our support team.",
+                    "action": "contactSupport"
+                }
             },
             {
                 "key": "verification",
-                "label": "Verification code email"
+                "label": "Verification code email",
+                "help": {
+                    "text": "To change the verification email template, contact our support team.",
+                    "action": "contactSupport"
+                }
             }
         ],
         "fields": [
