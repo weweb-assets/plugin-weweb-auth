@@ -24,6 +24,9 @@ export default {
             domain: window.location.hostname,
             path: wwLib.manager ? `/${this.websiteId}` : '/',
         });
+        /* wwEditor:start */
+        if (wwLib.editor?.isolatedCanvas) this.cognitoStorage = window.sessionStorage;
+        /* wwEditor:end */
         this.cognitoUserPool = new CognitoUserPool({
             ClientId: settings.publicData.clientId,
             UserPoolId: settings.publicData.userPoolId,

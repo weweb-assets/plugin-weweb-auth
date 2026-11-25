@@ -1,0 +1,333 @@
+{
+    "schemaVersion": 1,
+    "features": {
+        "auth": true
+    },
+    "designSystemId": "053d6253-48d1-4298-9ddc-d6a542fa400a",
+    "settings": {
+        "groups": [
+            {
+                "key": "invitation",
+                "label": "Invitation email",
+                "help": {
+                    "text": "To change the invitation email template, contact our support team.",
+                    "action": "contactSupport"
+                }
+            },
+            {
+                "key": "verification",
+                "label": "Verification code email",
+                "help": {
+                    "text": "To change the verification email template, contact our support team.",
+                    "action": "contactSupport"
+                }
+            }
+        ],
+        "fields": [
+            {
+                "key": "invitationSubject",
+                "type": "display",
+                "label": "Subject",
+                "group": "invitation",
+                "publicPath": ["invitationEmail", "EmailSubject"]
+            },
+            {
+                "key": "invitationMessage",
+                "type": "display",
+                "label": "Message",
+                "presentation": "formattedText",
+                "group": "invitation",
+                "publicPath": ["invitationEmail", "EmailMessage"],
+                "replacements": [
+                    {
+                        "token": "{username}",
+                        "label": "{email}"
+                    },
+                    {
+                        "token": "{####}",
+                        "label": "{password}"
+                    }
+                ]
+            },
+            {
+                "key": "verificationSubject",
+                "type": "display",
+                "label": "Subject",
+                "group": "verification",
+                "publicPath": ["verificationEmail", "EmailSubject"]
+            },
+            {
+                "key": "verificationMessage",
+                "type": "display",
+                "label": "Message",
+                "presentation": "formattedText",
+                "group": "verification",
+                "publicPath": ["verificationEmail", "EmailMessage"],
+                "replacements": [
+                    {
+                        "token": "{####}",
+                        "label": "{code}"
+                    }
+                ]
+            }
+        ],
+        "summary": [
+            {
+                "field": "invitationSubject",
+                "label": "Invitation email"
+            },
+            {
+                "field": "verificationSubject",
+                "label": "Verification code email"
+            }
+        ]
+    },
+    "variables": [
+        {
+            "name": "user",
+            "type": "object"
+        },
+        {
+            "name": "isAuthenticated",
+            "type": "boolean"
+        }
+    ],
+    "actions": [
+        {
+            "name": "Sign Up",
+            "code": "signUp",
+            "isAsync": true,
+            "validation": "requiredFields",
+            "form": {
+                "fields": [
+                    {
+                        "key": "email",
+                        "label": "Email",
+                        "type": "text",
+                        "bindable": true,
+                        "required": true,
+                        "placeholder": "Enter an email"
+                    },
+                    {
+                        "key": "password",
+                        "label": "Password",
+                        "type": "text",
+                        "bindable": true,
+                        "required": true,
+                        "placeholder": "Enter a password"
+                    },
+                    {
+                        "key": "name",
+                        "label": "Name",
+                        "type": "text",
+                        "bindable": true,
+                        "placeholder": "Enter a value"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Login",
+            "code": "login",
+            "isAsync": true,
+            "validation": "requiredFields",
+            "form": {
+                "fields": [
+                    {
+                        "key": "email",
+                        "label": "Email",
+                        "type": "text",
+                        "bindable": true,
+                        "required": true,
+                        "placeholder": "Enter an email"
+                    },
+                    {
+                        "key": "password",
+                        "label": "Password",
+                        "type": "text",
+                        "bindable": true,
+                        "required": true,
+                        "placeholder": "Enter a password"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Update User Profile",
+            "code": "updateUserProfile",
+            "isAsync": true,
+            "validation": "requiredFields",
+            "form": {
+                "fields": [
+                    {
+                        "key": "email",
+                        "label": "Email",
+                        "type": "text",
+                        "bindable": true,
+                        "required": true,
+                        "placeholder": "Enter an email"
+                    },
+                    {
+                        "key": "name",
+                        "label": "Name",
+                        "type": "text",
+                        "bindable": true,
+                        "placeholder": "Enter a name"
+                    },
+                    {
+                        "key": "attributes",
+                        "label": "Custom attributes",
+                        "type": "list",
+                        "bindable": true,
+                        "item": {
+                            "type": "record",
+                            "fields": [
+                                {
+                                    "key": "key",
+                                    "label": "Attribute",
+                                    "type": "choice",
+                                    "choices": [
+                                        {
+                                            "value": "picture",
+                                            "label": "Picture"
+                                        },
+                                        {
+                                            "value": "given_name",
+                                            "label": "Given name"
+                                        },
+                                        {
+                                            "value": "family_name",
+                                            "label": "Family name"
+                                        },
+                                        {
+                                            "value": "middle_name",
+                                            "label": "Middle name"
+                                        },
+                                        {
+                                            "value": "nickname",
+                                            "label": "Nickname"
+                                        },
+                                        {
+                                            "value": "profile",
+                                            "label": "Profile URL"
+                                        },
+                                        {
+                                            "value": "website",
+                                            "label": "Website URL"
+                                        },
+                                        {
+                                            "value": "gender",
+                                            "label": "Gender"
+                                        },
+                                        {
+                                            "value": "birthdate",
+                                            "label": "Birthdate"
+                                        },
+                                        {
+                                            "value": "zoneinfo",
+                                            "label": "Zoneinfo"
+                                        },
+                                        {
+                                            "value": "locale",
+                                            "label": "Locale"
+                                        },
+                                        {
+                                            "value": "address",
+                                            "label": "Address"
+                                        },
+                                        {
+                                            "value": "phone_number",
+                                            "label": "Phone number"
+                                        }
+                                    ],
+                                    "placeholder": "Select an attribute"
+                                },
+                                {
+                                    "key": "value",
+                                    "label": "Value",
+                                    "type": "text",
+                                    "bindable": true,
+                                    "placeholder": "Enter a value"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Change Password",
+            "code": "changePassword",
+            "isAsync": true,
+            "validation": "requiredFields",
+            "form": {
+                "fields": [
+                    {
+                        "key": "oldPassword",
+                        "label": "Old Password",
+                        "type": "text",
+                        "bindable": true,
+                        "required": true,
+                        "placeholder": "Enter the old password"
+                    },
+                    {
+                        "key": "newPassword",
+                        "label": "New Password",
+                        "type": "text",
+                        "bindable": true,
+                        "required": true,
+                        "placeholder": "Enter the new password"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Forgot Password",
+            "code": "forgotPassword",
+            "isAsync": true,
+            "validation": "requiredFields",
+            "form": {
+                "fields": [
+                    {
+                        "key": "email",
+                        "label": "Email",
+                        "type": "text",
+                        "bindable": true,
+                        "required": true,
+                        "placeholder": "Enter an email"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Confirm Password",
+            "code": "confirmPassword",
+            "isAsync": true,
+            "validation": "requiredFields",
+            "form": {
+                "fields": [
+                    {
+                        "key": "verificationCode",
+                        "label": "Verification Code",
+                        "type": "text",
+                        "bindable": true,
+                        "required": true,
+                        "placeholder": "Enter the verification code"
+                    },
+                    {
+                        "key": "newPassword",
+                        "label": "New Password",
+                        "type": "text",
+                        "bindable": true,
+                        "required": true,
+                        "placeholder": "Enter the new password"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Logout",
+            "code": "logout"
+        }
+    ]
+}
